@@ -1,0 +1,60 @@
+extends ../../layouts/admin.pug
+
+block content
+  .flex.flex-col.items-center.py-10.px-4
+    .w-full.max-w-md
+      h2.font-heading.text-3xl.font-extrabold.text-gray-50.mb-1 Cancelación de Reservas
+      p.text-sm.text-gray-400.mb-8 Administra y gestiona el estado de tus reservaciones activas
+
+      #alerta.hidden.mb-4.p-4.rounded-xl.border.border-error.font-bold.text-sm(class="bg-error/15 text-error")
+
+      //- CARD 1: SELECCIONAR RESERVA
+      #card-lista.card-step.bg-gray-900.border.border-gray-800.rounded-xl.overflow-hidden.transition-all.duration-300
+        .px-5.py-4.bg-gray-950.border-b.border-gray-800.flex.items-center.gap-3
+          .w-6.h-6.bg-secondary-500.rounded-full.flex.items-center.justify-center.text-xs.font-bold.text-white 1
+          h3.font-heading.text-sm.font-bold.text-gray-50 Seleccionar reserva
+
+        .p-6
+          .reservas-container.flex.flex-col.gap-4
+
+      //- CARD 2: CONFIRMAR CANCELACIÓN
+      #card-confirmacion.card-step.hidden.bg-gray-900.border.border-gray-800.rounded-xl.overflow-hidden.transition-all.duration-300
+        .px-5.py-4.bg-gray-950.border-b.border-gray-800.flex.items-center.gap-3
+          .w-6.h-6.bg-error.rounded-full.flex.items-center.justify-center.text-xs.font-bold.text-white !
+          h3.font-heading.text-sm.font-bold.text-gray-50 Confirmar cancelación
+
+        .p-6
+          .w-12.h-12.flex.items-center.justify-center.mb-3.text-xl.rounded-lg.border-2.border-error.text-error(class="bg-error/15")
+            span 🗑️
+
+          h3.font-heading.text-xl.font-bold.text-gray-50.mb-1 Cancelar Reserva
+          p.alerta-texto.text-xs.text-gray-400.mb-4
+
+          .detalle-reserva.w-full.bg-gray-950.border.border-gray-800.rounded-lg.p-3.text-xs.text-gray-400.mb-4
+
+          .border.text-error.p-3.rounded-lg.mb-6.text-xs.font-semibold(class="bg-error/15 border-error/30")
+            span ⚠️ Esta acción no se puede deshacer.
+
+          .flex.gap-3
+            button.btn-volver.w-full.bg-gray-800.text-white.font-medium.rounded-lg.transition-colors(class="py-2.5 hover:bg-gray-700" type="button") Volver
+            button.btn-confirmar.w-full.bg-error.text-white.font-bold.rounded-lg.shadow-lg.transition-opacity(class="py-2.5 hover:opacity-90" type="button") Sí, cancelar
+
+      //- CARD 3: ÉXITO DE CANCELACIÓN
+      #card-exito.card-step.hidden.bg-gray-900.border.border-gray-800.rounded-xl.overflow-hidden.transition-all.duration-300
+        .px-5.py-4.bg-gray-950.border-b.border-gray-800.flex.items-center.gap-3
+          .w-6.h-6.bg-secondary-500.rounded-full.flex.items-center.justify-center.text-xs.font-bold.text-white ✔
+          h3.font-heading.text-sm.font-bold.text-gray-50 Reserva cancelada
+
+        .p-6.text-center
+          .w-16.h-16.rounded-full.flex.items-center.justify-center.mx-auto.mb-4(class="bg-secondary-500/20")
+            span.text-3xl ✅
+          h3.font-heading.text-xl.font-bold.text-gray-50.mb-1 Reserva Cancelada
+          p.text-xs.text-gray-400.mb-6 El cupo ha sido liberado correctamente.
+
+          .detalle-exito.w-full.mb-6.text-left
+
+          .flex.flex-col.gap-3
+            button.btn-ver-reservas.w-full.bg-gradient-to-r.from-primary-500.to-secondary-500.text-white.font-bold.rounded-lg.shadow-lg.transition-opacity(class="py-2.5 hover:opacity-90" type="button") Ver mis reservas
+            button.btn-inicio.w-full.bg-gray-800.text-white.font-medium.rounded-lg.transition-colors(class="py-2.5 hover:bg-gray-700" type="button") Inicio
+
+  script(src="/js/pages/cancelarReserva.js")

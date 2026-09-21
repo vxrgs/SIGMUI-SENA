@@ -252,6 +252,30 @@ app.get("/api/zones", async (req, res) => {
   }
 });
 
+app.get("/reservas/cancelar", (req, res) => {
+  res.render("pages/reservas/cancelarView", {
+    title: "Cancelación de Reservas",
+    user: defaultUser,
+    currentRoute: "reservas",
+  });
+});
+
+app.get("/reservas/historial", (req, res) => {
+  res.render("pages/reservas/historialView", {
+    title: "Historial de Reservas",
+    user: defaultUser,
+    currentRoute: "historial",
+  });
+});
+
+app.get("/admin/usuarios", (req, res) => {
+  res.render("pages/admin/usuariosView", {
+    title: "Gestión de Usuarios",
+    user: defaultUser,
+    currentRoute: "usuarios",
+  });
+});
+
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });

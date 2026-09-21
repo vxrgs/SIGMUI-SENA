@@ -1,0 +1,113 @@
+extends ../../layouts/admin.pug
+
+block content
+  .flex.flex-col.py-8.px-6.max-w-7xl.mx-auto
+    //- Encabezado
+    .mb-8
+      h1.font-heading.text-3xl.font-extrabold.text-gray-50.mb-1 Gestión de Usuarios
+      p.text-sm.text-gray-400 Administra permisos, roles y estados de los usuarios del sistema
+
+    //- Tarjetas de Resumen
+    .cards.grid.grid-cols-1.gap-4.mb-6(class="sm:grid-cols-2 lg:grid-cols-4")
+      .bg-gray-900.border.border-gray-800.rounded-xl.p-5.flex.items-center.gap-4.transition-all.duration-200(class="hover:border-primary-500 hover:-translate-y-0.5")
+        .w-12.h-12.rounded-xl.flex.items-center.justify-center.text-xl(class="bg-primary-500/15 text-primary-400") 👥
+        div
+          h3#totalUsuarios.font-heading.text-3xl.font-bold.text-gray-50 0
+          p.text-xs.font-medium.text-gray-400 Total Usuarios
+
+      .bg-gray-900.border.border-gray-800.rounded-xl.p-5.flex.items-center.gap-4.transition-all.duration-200(class="hover:border-emerald-500 hover:-translate-y-0.5")
+        .w-12.h-12.rounded-xl.flex.items-center.justify-center.text-xl(class="bg-emerald-500/15 text-emerald-400") ✅
+        div
+          h3#activos.font-heading.text-3xl.font-bold.text-emerald-400 0
+          p.text-xs.font-medium.text-gray-400 Activos
+
+      .bg-gray-900.border.border-gray-800.rounded-xl.p-5.flex.items-center.gap-4.transition-all.duration-200(class="hover:border-error hover:-translate-y-0.5")
+        .w-12.h-12.rounded-xl.flex.items-center.justify-center.text-xl(class="bg-error/15 text-error") 🚫
+        div
+          h3#inactivos.font-heading.text-3xl.font-bold.text-error 0
+          p.text-xs.font-medium.text-gray-400 Inactivos
+
+      .bg-gray-900.border.border-gray-800.rounded-xl.p-5.flex.items-center.gap-4.transition-all.duration-200(class="hover:border-warning hover:-translate-y-0.5")
+        .w-12.h-12.rounded-xl.flex.items-center.justify-center.text-xl(class="bg-warning/15 text-warning") 🛡️
+        div
+          h3#admins.font-heading.text-3xl.font-bold.text-warning 0
+          p.text-xs.font-medium.text-gray-400 Administradores
+
+    //- Filtros y Buscador
+    .filtros.flex.flex-col.gap-4.mb-6(class="md:flex-row md:items-center md:justify-between")
+      input#buscador.w-full.bg-gray-900.border.border-gray-800.rounded-xl.px-4.text-sm.text-gray-200.outline-none.transition-all(class="py-2.5 md:w-96 focus:border-primary-500" type="text" placeholder="🔍 Buscar por nombre o correo...")
+      
+      .botones.flex.flex-wrap.gap-2
+        button.filtro-btn.active.rounded-full.border.border-primary-500.text-primary-400.text-xs.font-medium.transition-all(class="px-4 py-1.5 bg-primary-500/10" type="button" data-filtro="todos") Todos
+        button.filtro-btn.rounded-full.border.border-gray-800.text-gray-400.text-xs.font-medium.transition-all(class="px-4 py-1.5 hover:border-primary-500 hover:text-primary-400" type="button" data-filtro="activo") Activos
+        button.filtro-btn.rounded-full.border.border-gray-800.text-gray-400.text-xs.font-medium.transition-all(class="px-4 py-1.5 hover:border-primary-500 hover:text-primary-400" type="button" data-filtro="inactivo") Inactivos
+        button.filtro-btn.rounded-full.border.border-gray-800.text-gray-400.text-xs.font-medium.transition-all(class="px-4 py-1.5 hover:border-primary-500 hover:text-primary-400" type="button" data-filtro="admin") Administradores
+
+    //- Tabla
+    .tabla-card.w-full.bg-gray-900.border.border-gray-800.rounded-xl.overflow-hidden.shadow-xl
+      .hidden(class="md:grid grid-cols-6 px-5 py-3.5 bg-gray-950 border-b border-gray-800 text-xs font-bold text-gray-400 font-heading tracking-wider uppercase")
+        span USUARIO
+        span ROL
+        span FECHA
+        span RESERVAS
+        span ESTADO
+        span ACCIONES
+
+      .tabla-body.divide-y.divide-gray-800
+
+    //- VISTA EDITAR
+    #vista-editar.oculto.hidden.mt-6
+      .bg-gray-900.border.border-gray-800.rounded-2xl.p-6.max-w-lg.mx-auto.shadow-2xl
+        .flex.items-center.justify-between.mb-4
+          h2.font-heading.text-lg.font-bold.text-gray-50 Editar usuario
+          button#cerrarEditar.text-gray-400.transition-colors(class="hover:text-white" type="button") ✖
+
+        .space-y-4
+          input#editNombre.w-full.bg-gray-950.border.border-gray-800.rounded-xl.p-3.text-sm.text-gray-200.outline-none(class="focus:border-primary-500" type="text" placeholder="Nombre")
+          input#editCorreo.w-full.bg-gray-950.border.border-gray-800.rounded-xl.p-3.text-sm.text-gray-200.outline-none(class="focus:border-primary-500" type="email" placeholder="Correo")
+          
+          .grid.grid-cols-2.gap-3
+            select#editRol.bg-gray-950.border.border-gray-800.rounded-xl.p-3.text-sm.text-gray-200.outline-none(class="focus:border-primary-500")
+              option Ciudadano
+              option Administrador
+            
+            select#editEstado.bg-gray-950.border.border-gray-800.rounded-xl.p-3.text-sm.text-gray-200.outline-none(class="focus:border-primary-500")
+              option(value="activo") Activo
+              option(value="inactivo") Inactivo
+
+          .flex.justify-end.gap-3.pt-2
+            button#cancelarEditar.px-4.py-2.rounded-xl.border.border-gray-800.text-xs.font-medium.text-gray-400.transition-colors(class="hover:bg-gray-800 hover:text-white" type="button") Cancelar
+            button#guardarEditar.px-4.py-2.rounded-xl.border.border-primary-500.text-xs.font-bold.text-primary-400.transition-colors(class="bg-primary-500/15 hover:bg-primary-500 hover:text-white" type="button") Guardar Cambios
+
+    //- VISTA TOGGLE ESTADO
+    #vista-toggle.oculto.hidden.mt-6
+      .bg-gray-900.border.border-gray-800.rounded-2xl.p-6.max-w-lg.mx-auto.shadow-2xl
+        .flex.items-center.justify-between.mb-4
+          h2#tituloToggle.font-heading.text-lg.font-bold.text-gray-50 Desactivar usuario
+          button#cerrarToggle.text-gray-400.transition-colors(class="hover:text-white" type="button") ✖
+
+        #mensajeToggle.text-sm.text-gray-400.my-4
+
+        .flex.justify-end.gap-3.pt-2
+          button#cancelarToggle.px-4.py-2.rounded-xl.border.border-gray-800.text-xs.font-medium.text-gray-400.transition-colors(class="hover:bg-gray-800 hover:text-white" type="button") Cancelar
+          button#confirmarToggle.px-4.py-2.rounded-xl.border.border-warning.text-xs.font-bold.text-warning.transition-colors(class="bg-warning/15 hover:bg-warning hover:text-black" type="button") Confirmar
+
+    //- VISTA ELIMINAR
+    #vista-eliminar.oculto.hidden.mt-6
+      .bg-gray-900.border.border-gray-800.rounded-2xl.p-6.max-w-lg.mx-auto.shadow-2xl
+        .flex.items-center.justify-between.mb-4
+          h2.font-heading.text-lg.font-bold.text-gray-50 Eliminar usuario
+          button#cerrarEliminar.text-gray-400.transition-colors(class="hover:text-white" type="button") ✖
+
+        .p-4.rounded-xl.border.border-error.text-error.text-xs.leading-relaxed.mb-4(class="bg-error/10")
+          span ⚠️ Esta acción es 
+          strong permanente e irreversible
+          span . El usuario y todos sus datos asociados serán eliminados del sistema.
+
+        #deleteUserPreview.bg-gray-950.border.border-gray-800.rounded-xl.p-4.mb-4.flex.items-center.justify-between
+
+        .flex.justify-end.gap-3.pt-2
+          button#cancelarEliminar.px-4.py-2.rounded-xl.border.border-gray-800.text-xs.font-medium.text-gray-400.transition-colors(class="hover:bg-gray-800 hover:text-white" type="button") Cancelar
+          button#confirmarEliminar.px-4.py-2.rounded-xl.border.border-error.text-xs.font-bold.text-error.transition-colors(class="bg-error/20 hover:bg-error hover:text-white" type="button") Eliminar usuario
+
+  script(src="/js/pages/gestionUsuarios.js")

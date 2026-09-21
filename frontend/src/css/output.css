@@ -9,10 +9,22 @@
       "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
+<<<<<<< HEAD
     --color-gray-50: var(--gray-50);
     --color-gray-300: var(--gray-300);
     --color-gray-400: var(--gray-400);
     --color-gray-500: var(--gray-500);
+=======
+    --color-red-500: oklch(63.7% 0.237 25.331);
+    --color-emerald-400: oklch(76.5% 0.177 163.223);
+    --color-emerald-500: oklch(69.6% 0.17 162.48);
+    --color-gray-50: var(--gray-50);
+    --color-gray-200: var(--gray-200);
+    --color-gray-300: var(--gray-300);
+    --color-gray-400: var(--gray-400);
+    --color-gray-500: var(--gray-500);
+    --color-gray-600: var(--gray-600);
+>>>>>>> origin/develop_joseph
     --color-gray-700: var(--gray-700);
     --color-gray-800: var(--gray-800);
     --color-gray-900: var(--gray-900);
@@ -21,7 +33,13 @@
     --color-white: #fff;
     --spacing: 0.25rem;
     --container-sm: 24rem;
+<<<<<<< HEAD
     --container-lg: 32rem;
+=======
+    --container-md: 28rem;
+    --container-lg: 32rem;
+    --container-7xl: 80rem;
+>>>>>>> origin/develop_joseph
     --text-xs: 0.75rem;
     --text-xs--line-height: calc(1 / 0.75);
     --text-sm: 0.875rem;
@@ -36,6 +54,11 @@
     --text-2xl--line-height: calc(2 / 1.5);
     --text-3xl: 1.875rem;
     --text-3xl--line-height: calc(2.25 / 1.875);
+<<<<<<< HEAD
+=======
+    --text-4xl: 2.25rem;
+    --text-4xl--line-height: calc(2.5 / 2.25);
+>>>>>>> origin/develop_joseph
     --font-weight-normal: 400;
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
@@ -44,7 +67,11 @@
     --tracking-tight: -0.025em;
     --tracking-wide: 0.025em;
     --tracking-wider: 0.05em;
+<<<<<<< HEAD
     --leading-normal: 1.5;
+=======
+    --leading-tight: 1.25;
+>>>>>>> origin/develop_joseph
     --radius-sm: var(--radius-sm);
     --radius-md: var(--radius-md);
     --radius-lg: var(--radius-lg);
@@ -226,9 +253,12 @@
   }
 }
 @layer utilities {
+<<<<<<< HEAD
   .pointer-events-none {
     pointer-events: none;
   }
+=======
+>>>>>>> origin/develop_joseph
   .sr-only {
     position: absolute;
     width: 1px;
@@ -258,9 +288,12 @@
   .top-1 {
     top: var(--spacing-1);
   }
+<<<<<<< HEAD
   .top-1\/2 {
     top: calc(1 / 2 * 100%);
   }
+=======
+>>>>>>> origin/develop_joseph
   .top-\[30\%\] {
     top: 30%;
   }
@@ -282,30 +315,37 @@
   .left-0 {
     left: 0px;
   }
+<<<<<<< HEAD
   .left-1 {
     left: var(--spacing-1);
   }
   .left-1\/2 {
     left: calc(1 / 2 * 100%);
   }
+=======
+>>>>>>> origin/develop_joseph
   .left-\[25\%\] {
     left: 25%;
   }
   .left-\[65\%\] {
     left: 65%;
   }
+<<<<<<< HEAD
   .z-0 {
     z-index: 0;
   }
   .z-10 {
     z-index: 10;
   }
+=======
+>>>>>>> origin/develop_joseph
   .z-50 {
     z-index: 50;
   }
   .m-0 {
     margin: 0px;
   }
+<<<<<<< HEAD
   .mx-auto {
     margin-inline: auto;
   }
@@ -314,6 +354,16 @@
   }
   .my-5 {
     margin-block: var(--spacing-5);
+=======
+  .m-4 {
+    margin: var(--spacing-4);
+  }
+  .mx-auto {
+    margin-inline: auto;
+  }
+  .my-8 {
+    margin-block: var(--spacing-8);
+>>>>>>> origin/develop_joseph
   }
   .mt-1 {
     margin-top: var(--spacing-1);
@@ -342,6 +392,7 @@
   .mb-6 {
     margin-bottom: var(--spacing-6);
   }
+<<<<<<< HEAD
   .mb-7 {
     margin-bottom: calc(var(--spacing) * 7);
   }
@@ -351,6 +402,11 @@
   .ml-1 {
     margin-left: var(--spacing-1);
   }
+=======
+  .mb-8 {
+    margin-bottom: var(--spacing-8);
+  }
+>>>>>>> origin/develop_joseph
   .block {
     display: block;
   }
@@ -363,6 +419,7 @@
   .hidden {
     display: none;
   }
+<<<<<<< HEAD
   .inline-flex {
     display: inline-flex;
   }
@@ -372,15 +429,26 @@
   .h-0 {
     height: 0px;
   }
+=======
+  .inline-block {
+    display: inline-block;
+  }
+  .inline-flex {
+    display: inline-flex;
+  }
+>>>>>>> origin/develop_joseph
   .h-0\.5 {
     height: calc(var(--spacing) * 0.5);
   }
   .h-1 {
     height: var(--spacing-1);
   }
+<<<<<<< HEAD
   .h-1\.5 {
     height: calc(var(--spacing) * 1.5);
   }
+=======
+>>>>>>> origin/develop_joseph
   .h-2 {
     height: var(--spacing-2);
   }
@@ -399,12 +467,18 @@
   .h-10 {
     height: var(--spacing-10);
   }
+<<<<<<< HEAD
   .h-11 {
     height: calc(var(--spacing) * 11);
+=======
+  .h-12 {
+    height: calc(var(--spacing) * 12);
+>>>>>>> origin/develop_joseph
   }
   .h-16 {
     height: calc(var(--spacing) * 16);
   }
+<<<<<<< HEAD
   .h-\[1px\] {
     height: 1px;
   }
@@ -414,18 +488,26 @@
   .h-\[640px\] {
     height: 640px;
   }
+=======
+  .h-\[400px\] {
+    height: 400px;
+  }
+>>>>>>> origin/develop_joseph
   .h-full {
     height: 100%;
   }
   .min-h-screen {
     min-height: 100vh;
   }
+<<<<<<< HEAD
   .w-1 {
     width: var(--spacing-1);
   }
   .w-1\.5 {
     width: calc(var(--spacing) * 1.5);
   }
+=======
+>>>>>>> origin/develop_joseph
   .w-2 {
     width: var(--spacing-2);
   }
@@ -447,6 +529,12 @@
   .w-10 {
     width: var(--spacing-10);
   }
+<<<<<<< HEAD
+=======
+  .w-12 {
+    width: calc(var(--spacing) * 12);
+  }
+>>>>>>> origin/develop_joseph
   .w-16 {
     width: calc(var(--spacing) * 16);
   }
@@ -456,6 +544,7 @@
   .w-64 {
     width: calc(var(--spacing) * 64);
   }
+<<<<<<< HEAD
   .w-\[640px\] {
     width: 640px;
   }
@@ -467,16 +556,30 @@
   }
   .max-w-\[480px\] {
     max-width: 480px;
+=======
+  .w-full {
+    width: 100%;
+  }
+  .max-w-7xl {
+    max-width: var(--container-7xl);
+>>>>>>> origin/develop_joseph
   }
   .max-w-lg {
     max-width: var(--container-lg);
   }
+<<<<<<< HEAD
+=======
+  .max-w-md {
+    max-width: var(--container-md);
+  }
+>>>>>>> origin/develop_joseph
   .max-w-sm {
     max-width: var(--container-sm);
   }
   .flex-1 {
     flex: 1;
   }
+<<<<<<< HEAD
   .flex-shrink {
     flex-shrink: 1;
   }
@@ -505,6 +608,11 @@
     --tw-translate-y: calc(calc(1 / 2 * 100%) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
+=======
+  .flex-shrink-0 {
+    flex-shrink: 0;
+  }
+>>>>>>> origin/develop_joseph
   .scale-95 {
     --tw-scale-x: 95%;
     --tw-scale-y: 95%;
@@ -523,9 +631,12 @@
   .cursor-pointer {
     cursor: pointer;
   }
+<<<<<<< HEAD
   .resize {
     resize: both;
   }
+=======
+>>>>>>> origin/develop_joseph
   .list-none {
     list-style-type: none;
   }
@@ -535,6 +646,12 @@
   .grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+<<<<<<< HEAD
+=======
+  .grid-cols-7 {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+>>>>>>> origin/develop_joseph
   .flex-col {
     flex-direction: column;
   }
@@ -571,32 +688,65 @@
   .gap-6 {
     gap: var(--spacing-6);
   }
+<<<<<<< HEAD
+=======
+  :where(.space-y-1 > :not(:last-child)) {
+    --tw-space-y-reverse: 0;
+    margin-block-start: calc(var(--spacing-1) * var(--tw-space-y-reverse));
+    margin-block-end: calc(var(--spacing-1) * calc(1 - var(--tw-space-y-reverse)));
+  }
+>>>>>>> origin/develop_joseph
   :where(.space-y-4 > :not(:last-child)) {
     --tw-space-y-reverse: 0;
     margin-block-start: calc(var(--spacing-4) * var(--tw-space-y-reverse));
     margin-block-end: calc(var(--spacing-4) * calc(1 - var(--tw-space-y-reverse)));
   }
+<<<<<<< HEAD
   .overflow-hidden {
     overflow: hidden;
   }
   .overflow-x-hidden {
     overflow-x: hidden;
   }
+=======
+  :where(.divide-y > :not(:last-child)) {
+    --tw-divide-y-reverse: 0;
+    border-bottom-style: var(--tw-border-style);
+    border-top-style: var(--tw-border-style);
+    border-top-width: calc(1px * var(--tw-divide-y-reverse));
+    border-bottom-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+  }
+  :where(.divide-gray-800 > :not(:last-child)) {
+    border-color: var(--color-gray-800);
+  }
+  .overflow-hidden {
+    overflow: hidden;
+  }
+>>>>>>> origin/develop_joseph
   .overflow-y-auto {
     overflow-y: auto;
   }
   .rounded-2xl {
     border-radius: var(--radius-2xl);
   }
+<<<<<<< HEAD
   .rounded-\[16px\] {
     border-radius: 16px;
   }
+=======
+>>>>>>> origin/develop_joseph
   .rounded-full {
     border-radius: var(--radius-full);
   }
   .rounded-lg {
     border-radius: var(--radius-lg);
   }
+<<<<<<< HEAD
+=======
+  .rounded-md {
+    border-radius: var(--radius-md);
+  }
+>>>>>>> origin/develop_joseph
   .rounded-xl {
     border-radius: var(--radius-xl);
   }
@@ -612,6 +762,13 @@
     border-style: var(--tw-border-style);
     border-width: 1px;
   }
+<<<<<<< HEAD
+=======
+  .border-0 {
+    border-style: var(--tw-border-style);
+    border-width: 0px;
+  }
+>>>>>>> origin/develop_joseph
   .border-2 {
     border-style: var(--tw-border-style);
     border-width: 2px;
@@ -632,12 +789,27 @@
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 1px;
   }
+<<<<<<< HEAD
+=======
+  .border-dashed {
+    --tw-border-style: dashed;
+    border-style: dashed;
+  }
+>>>>>>> origin/develop_joseph
   .border-none {
     --tw-border-style: none;
     border-style: none;
   }
+<<<<<<< HEAD
   .border-\[\#1E2A3A\] {
     border-color: #1E2A3A;
+=======
+  .border-emerald-500\/40 {
+    border-color: color-mix(in srgb, oklch(69.6% 0.17 162.48) 40%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, var(--color-emerald-500) 40%, transparent);
+    }
+>>>>>>> origin/develop_joseph
   }
   .border-error {
     border-color: var(--color-error);
@@ -648,6 +820,18 @@
       border-color: color-mix(in oklab, var(--color-error) 30%, transparent);
     }
   }
+<<<<<<< HEAD
+=======
+  .border-error\/40 {
+    border-color: color-mix(in srgb, #E0483A 40%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, var(--color-error) 40%, transparent);
+    }
+  }
+  .border-gray-600 {
+    border-color: var(--color-gray-600);
+  }
+>>>>>>> origin/develop_joseph
   .border-gray-700 {
     border-color: var(--color-gray-700);
   }
@@ -663,6 +847,15 @@
       border-color: color-mix(in oklab, var(--color-primary-500) 20%, transparent);
     }
   }
+<<<<<<< HEAD
+=======
+  .border-primary-500\/40 {
+    border-color: var(--color-primary-500);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, var(--color-primary-500) 40%, transparent);
+    }
+  }
+>>>>>>> origin/develop_joseph
   .border-secondary-500 {
     border-color: var(--color-secondary-500);
   }
@@ -681,6 +874,7 @@
       border-color: color-mix(in oklab, var(--color-warning) 30%, transparent);
     }
   }
+<<<<<<< HEAD
   .bg-\[\#0A1628\] {
     background-color: #0A1628;
   }
@@ -708,6 +902,17 @@
   .bg-black {
     background-color: var(--color-black);
   }
+=======
+  .border-warning\/40 {
+    border-color: color-mix(in srgb, #E0A83A 40%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, var(--color-warning) 40%, transparent);
+    }
+  }
+  .bg-\[\#0A1628\] {
+    background-color: #0A1628;
+  }
+>>>>>>> origin/develop_joseph
   .bg-black\/80 {
     background-color: color-mix(in srgb, #000 80%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -717,18 +922,45 @@
   .bg-current {
     background-color: currentcolor;
   }
+<<<<<<< HEAD
   .bg-error {
     background-color: var(--color-error);
   }
+=======
+  .bg-emerald-500\/15 {
+    background-color: color-mix(in srgb, oklch(69.6% 0.17 162.48) 15%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-emerald-500) 15%, transparent);
+    }
+  }
+  .bg-error {
+    background-color: var(--color-error);
+  }
+  .bg-error\/10 {
+    background-color: color-mix(in srgb, #E0483A 10%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-error) 10%, transparent);
+    }
+  }
+  .bg-error\/15 {
+    background-color: color-mix(in srgb, #E0483A 15%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-error) 15%, transparent);
+    }
+  }
+>>>>>>> origin/develop_joseph
   .bg-error\/20 {
     background-color: color-mix(in srgb, #E0483A 20%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-error) 20%, transparent);
     }
   }
+<<<<<<< HEAD
   .bg-gray-500 {
     background-color: var(--color-gray-500);
   }
+=======
+>>>>>>> origin/develop_joseph
   .bg-gray-800 {
     background-color: var(--color-gray-800);
   }
@@ -753,9 +985,27 @@
       background-color: color-mix(in oklab, var(--color-primary-500) 15%, transparent);
     }
   }
+<<<<<<< HEAD
   .bg-secondary-500 {
     background-color: var(--color-secondary-500);
   }
+=======
+  .bg-red-500\/10 {
+    background-color: color-mix(in srgb, oklch(63.7% 0.237 25.331) 10%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-red-500) 10%, transparent);
+    }
+  }
+  .bg-secondary-500 {
+    background-color: var(--color-secondary-500);
+  }
+  .bg-secondary-500\/15 {
+    background-color: var(--color-secondary-500);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-secondary-500) 15%, transparent);
+    }
+  }
+>>>>>>> origin/develop_joseph
   .bg-secondary-500\/20 {
     background-color: var(--color-secondary-500);
     @supports (color: color-mix(in lab, red, red)) {
@@ -765,6 +1015,15 @@
   .bg-warning {
     background-color: var(--color-warning);
   }
+<<<<<<< HEAD
+=======
+  .bg-warning\/15 {
+    background-color: color-mix(in srgb, #E0A83A 15%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-warning) 15%, transparent);
+    }
+  }
+>>>>>>> origin/develop_joseph
   .bg-warning\/20 {
     background-color: color-mix(in srgb, #E0A83A 20%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -779,22 +1038,31 @@
     --tw-gradient-position: to right in oklab;
     background-image: linear-gradient(var(--tw-gradient-stops));
   }
+<<<<<<< HEAD
   .from-\[\#1A6FD4\] {
     --tw-gradient-from: #1A6FD4;
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
+=======
+>>>>>>> origin/develop_joseph
   .from-primary-500 {
     --tw-gradient-from: var(--color-primary-500);
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
+<<<<<<< HEAD
   .to-\[\#3DBE6C\] {
     --tw-gradient-to: #3DBE6C;
+=======
+  .to-secondary-400 {
+    --tw-gradient-to: var(--color-secondary-400);
+>>>>>>> origin/develop_joseph
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
   .to-secondary-500 {
     --tw-gradient-to: var(--color-secondary-500);
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
+<<<<<<< HEAD
   .object-contain {
     object-fit: contain;
   }
@@ -804,6 +1072,11 @@
   .p-0 {
     padding: 0px;
   }
+=======
+  .object-cover {
+    object-fit: cover;
+  }
+>>>>>>> origin/develop_joseph
   .p-2 {
     padding: var(--spacing-2);
   }
@@ -825,21 +1098,33 @@
   .p-8 {
     padding: var(--spacing-8);
   }
+<<<<<<< HEAD
   .px-1 {
     padding-inline: var(--spacing-1);
   }
+=======
+>>>>>>> origin/develop_joseph
   .px-1\.5 {
     padding-inline: calc(var(--spacing) * 1.5);
   }
   .px-2 {
     padding-inline: var(--spacing-2);
   }
+<<<<<<< HEAD
   .px-3 {
     padding-inline: var(--spacing-3);
   }
   .px-3\.5 {
     padding-inline: calc(var(--spacing) * 3.5);
   }
+=======
+  .px-2\.5 {
+    padding-inline: calc(var(--spacing) * 2.5);
+  }
+  .px-3 {
+    padding-inline: var(--spacing-3);
+  }
+>>>>>>> origin/develop_joseph
   .px-4 {
     padding-inline: var(--spacing-4);
   }
@@ -849,15 +1134,24 @@
   .px-6 {
     padding-inline: var(--spacing-6);
   }
+<<<<<<< HEAD
   .py-0 {
     padding-block: 0px;
   }
+=======
+>>>>>>> origin/develop_joseph
   .py-0\.5 {
     padding-block: calc(var(--spacing) * 0.5);
   }
   .py-1 {
     padding-block: var(--spacing-1);
   }
+<<<<<<< HEAD
+=======
+  .py-1\.5 {
+    padding-block: calc(var(--spacing) * 1.5);
+  }
+>>>>>>> origin/develop_joseph
   .py-2 {
     padding-block: var(--spacing-2);
   }
@@ -867,6 +1161,12 @@
   .py-3 {
     padding-block: var(--spacing-3);
   }
+<<<<<<< HEAD
+=======
+  .py-3\.5 {
+    padding-block: calc(var(--spacing) * 3.5);
+  }
+>>>>>>> origin/develop_joseph
   .py-4 {
     padding-block: var(--spacing-4);
   }
@@ -882,6 +1182,12 @@
   .py-12 {
     padding-block: calc(var(--spacing) * 12);
   }
+<<<<<<< HEAD
+=======
+  .pt-2 {
+    padding-top: var(--spacing-2);
+  }
+>>>>>>> origin/develop_joseph
   .pb-3 {
     padding-bottom: var(--spacing-3);
   }
@@ -908,6 +1214,13 @@
     font-size: var(--text-3xl);
     line-height: var(--tw-leading, var(--text-3xl--line-height));
   }
+<<<<<<< HEAD
+=======
+  .text-4xl {
+    font-size: var(--text-4xl);
+    line-height: var(--tw-leading, var(--text-4xl--line-height));
+  }
+>>>>>>> origin/develop_joseph
   .text-base {
     font-size: var(--text-base);
     line-height: var(--tw-leading, var(--text-base--line-height));
@@ -934,6 +1247,7 @@
   .text-\[11px\] {
     font-size: 11px;
   }
+<<<<<<< HEAD
   .text-\[12px\] {
     font-size: 12px;
   }
@@ -952,6 +1266,11 @@
   .text-\[20px\] {
     font-size: 20px;
   }
+=======
+  .text-\[15px\] {
+    font-size: 15px;
+  }
+>>>>>>> origin/develop_joseph
   .text-\[26px\] {
     font-size: 26px;
   }
@@ -959,9 +1278,15 @@
     --tw-leading: 1;
     line-height: 1;
   }
+<<<<<<< HEAD
   .leading-normal {
     --tw-leading: var(--leading-normal);
     line-height: var(--leading-normal);
+=======
+  .leading-tight {
+    --tw-leading: var(--leading-tight);
+    line-height: var(--leading-tight);
+>>>>>>> origin/develop_joseph
   }
   .font-bold {
     --tw-font-weight: var(--font-weight-bold);
@@ -998,6 +1323,7 @@
   .whitespace-nowrap {
     white-space: nowrap;
   }
+<<<<<<< HEAD
   .text-\[\#1A6FD4\] {
     color: #1A6FD4;
   }
@@ -1006,6 +1332,10 @@
   }
   .text-\[\#E8EDF5\] {
     color: #E8EDF5;
+=======
+  .text-emerald-400 {
+    color: var(--color-emerald-400);
+>>>>>>> origin/develop_joseph
   }
   .text-error {
     color: var(--color-error);
@@ -1013,6 +1343,12 @@
   .text-gray-50 {
     color: var(--color-gray-50);
   }
+<<<<<<< HEAD
+=======
+  .text-gray-200 {
+    color: var(--color-gray-200);
+  }
+>>>>>>> origin/develop_joseph
   .text-gray-300 {
     color: var(--color-gray-300);
   }
@@ -1040,6 +1376,7 @@
   .no-underline {
     text-decoration-line: none;
   }
+<<<<<<< HEAD
   .underline {
     text-decoration-line: underline;
   }
@@ -1049,6 +1386,10 @@
   }
   .placeholder-\[\#5A6A7E\]::placeholder {
     color: #5A6A7E;
+=======
+  .placeholder-gray-500::placeholder {
+    color: var(--color-gray-500);
+>>>>>>> origin/develop_joseph
   }
   .opacity-0 {
     opacity: 0%;
@@ -1071,6 +1412,7 @@
     --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
+<<<<<<< HEAD
   .shadow-\[\#1A6FD4\]\/20 {
     --tw-shadow-color: color-mix(in srgb, #1A6FD4 20%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1080,14 +1422,22 @@
   .outline {
     outline-style: var(--tw-outline-style);
     outline-width: 1px;
+=======
+  .shadow-xl {
+    --tw-shadow: 0 20px 25px -5px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 8px 10px -6px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+>>>>>>> origin/develop_joseph
   }
   .blur {
     --tw-blur: blur(8px);
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
   }
+<<<<<<< HEAD
   .filter {
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
   }
+=======
+>>>>>>> origin/develop_joseph
   .transition {
     transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to, opacity, box-shadow, transform, translate, scale, rotate, filter, -webkit-backdrop-filter, backdrop-filter, display, content-visibility, overlay, pointer-events;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
@@ -1113,14 +1463,28 @@
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
+<<<<<<< HEAD
+=======
+  .duration-150 {
+    --tw-duration: 150ms;
+    transition-duration: 150ms;
+  }
+  .duration-200 {
+    --tw-duration: 200ms;
+    transition-duration: 200ms;
+  }
+>>>>>>> origin/develop_joseph
   .duration-300 {
     --tw-duration: 300ms;
     transition-duration: 300ms;
   }
+<<<<<<< HEAD
   .select-none {
     -webkit-user-select: none;
     user-select: none;
   }
+=======
+>>>>>>> origin/develop_joseph
   @media (hover: hover) {
     .group-hover\:block:is(:where(.group):hover *) {
       display: block;
@@ -1140,18 +1504,76 @@
     border-bottom-width: 0px;
   }
   @media (hover: hover) {
+<<<<<<< HEAD
+=======
+    .hover\:-translate-y-0\.5:hover {
+      --tw-translate-y: calc(var(--spacing) * -0.5);
+      translate: var(--tw-translate-x) var(--tw-translate-y);
+    }
+    .hover\:scale-\[1\.01\]:hover {
+      scale: 1.01;
+    }
+    .hover\:border-emerald-500:hover {
+      border-color: var(--color-emerald-500);
+    }
+    .hover\:border-error:hover {
+      border-color: var(--color-error);
+    }
+    .hover\:border-primary-500:hover {
+      border-color: var(--color-primary-500);
+    }
+    .hover\:border-warning:hover {
+      border-color: var(--color-warning);
+    }
+    .hover\:bg-error\/20:hover {
+      background-color: color-mix(in srgb, #E0483A 20%, transparent);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .hover\:bg-error\/20:hover {
+        background-color: color-mix(in oklab, var(--color-error) 20%, transparent);
+      }
+    }
+>>>>>>> origin/develop_joseph
     .hover\:bg-gray-700:hover {
       background-color: var(--color-gray-700);
     }
     .hover\:bg-gray-800:hover {
       background-color: var(--color-gray-800);
     }
+<<<<<<< HEAD
     .hover\:bg-gray-900:hover {
       background-color: var(--color-gray-900);
     }
     .hover\:text-gray-50:hover {
       color: var(--color-gray-50);
     }
+=======
+    .hover\:bg-gray-800\/50:hover {
+      background-color: var(--color-gray-800);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .hover\:bg-gray-800\/50:hover {
+        background-color: color-mix(in oklab, var(--color-gray-800) 50%, transparent);
+      }
+    }
+    .hover\:bg-gray-900:hover {
+      background-color: var(--color-gray-900);
+    }
+    .hover\:bg-primary-500\/20:hover {
+      background-color: var(--color-primary-500);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .hover\:bg-primary-500\/20:hover {
+        background-color: color-mix(in oklab, var(--color-primary-500) 20%, transparent);
+      }
+    }
+    .hover\:text-gray-50:hover {
+      color: var(--color-gray-50);
+    }
+    .hover\:text-primary-400:hover {
+      color: var(--color-primary-400);
+    }
+>>>>>>> origin/develop_joseph
     .hover\:underline:hover {
       text-decoration-line: underline;
     }
@@ -1159,8 +1581,13 @@
       opacity: 90%;
     }
   }
+<<<<<<< HEAD
   .focus\:border-\[\#1A6FD4\]:focus {
     border-color: #1A6FD4;
+=======
+  .focus\:border-primary-400:focus {
+    border-color: var(--color-primary-400);
+>>>>>>> origin/develop_joseph
   }
   .focus\:border-primary-500:focus {
     border-color: var(--color-primary-500);
@@ -1172,9 +1599,23 @@
   .disabled\:cursor-not-allowed:disabled {
     cursor: not-allowed;
   }
+<<<<<<< HEAD
   .disabled\:opacity-50:disabled {
     opacity: 50%;
   }
+=======
+  .disabled\:bg-gray-600:disabled {
+    background-color: var(--color-gray-600);
+  }
+  .disabled\:opacity-50:disabled {
+    opacity: 50%;
+  }
+  @media (width >= 40rem) {
+    .sm\:grid-cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+>>>>>>> origin/develop_joseph
   @media (width >= 48rem) {
     .md\:block {
       display: block;
@@ -1182,12 +1623,19 @@
     .md\:flex {
       display: flex;
     }
+<<<<<<< HEAD
+=======
+    .md\:grid {
+      display: grid;
+    }
+>>>>>>> origin/develop_joseph
     .md\:hidden {
       display: none;
     }
     .md\:grid-cols-3 {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
+<<<<<<< HEAD
     .md\:flex-row {
       flex-direction: row;
     }
@@ -1198,6 +1646,21 @@
     }
     .lg\:w-\[700px\] {
       width: 700px;
+=======
+    .md\:grid-cols-7 {
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+    }
+    .md\:flex-row {
+      flex-direction: row;
+    }
+    .md\:gap-0 {
+      gap: 0px;
+    }
+  }
+  @media (width >= 64rem) {
+    .lg\:grid-cols-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+>>>>>>> origin/develop_joseph
     }
   }
   @media (width >= 80rem) {
@@ -1266,6 +1729,7 @@
     color: var(--color-gray-50);
   }
 }
+<<<<<<< HEAD
 @property --tw-translate-x {
   syntax: "*";
   inherits: false;
@@ -1281,6 +1745,8 @@
   inherits: false;
   initial-value: 0;
 }
+=======
+>>>>>>> origin/develop_joseph
 @property --tw-scale-x {
   syntax: "*";
   inherits: false;
@@ -1321,6 +1787,14 @@
   inherits: false;
   initial-value: 0;
 }
+<<<<<<< HEAD
+=======
+@property --tw-divide-y-reverse {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+>>>>>>> origin/develop_joseph
 @property --tw-border-style {
   syntax: "*";
   inherits: false;
@@ -1445,11 +1919,14 @@
   inherits: false;
   initial-value: 0 0 #0000;
 }
+<<<<<<< HEAD
 @property --tw-outline-style {
   syntax: "*";
   inherits: false;
   initial-value: solid;
 }
+=======
+>>>>>>> origin/develop_joseph
 @property --tw-blur {
   syntax: "*";
   inherits: false;
@@ -1507,12 +1984,33 @@
   syntax: "*";
   inherits: false;
 }
+<<<<<<< HEAD
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
     *, ::before, ::after, ::backdrop {
       --tw-translate-x: 0;
       --tw-translate-y: 0;
       --tw-translate-z: 0;
+=======
+@property --tw-translate-x {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-translate-y {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-translate-z {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@layer properties {
+  @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
+    *, ::before, ::after, ::backdrop {
+>>>>>>> origin/develop_joseph
       --tw-scale-x: 1;
       --tw-scale-y: 1;
       --tw-scale-z: 1;
@@ -1522,6 +2020,10 @@
       --tw-skew-x: initial;
       --tw-skew-y: initial;
       --tw-space-y-reverse: 0;
+<<<<<<< HEAD
+=======
+      --tw-divide-y-reverse: 0;
+>>>>>>> origin/develop_joseph
       --tw-border-style: solid;
       --tw-gradient-position: initial;
       --tw-gradient-from: #0000;
@@ -1549,7 +2051,10 @@
       --tw-ring-offset-width: 0px;
       --tw-ring-offset-color: #fff;
       --tw-ring-offset-shadow: 0 0 #0000;
+<<<<<<< HEAD
       --tw-outline-style: solid;
+=======
+>>>>>>> origin/develop_joseph
       --tw-blur: initial;
       --tw-brightness: initial;
       --tw-contrast: initial;
@@ -1564,6 +2069,12 @@
       --tw-drop-shadow-alpha: 100%;
       --tw-drop-shadow-size: initial;
       --tw-duration: initial;
+<<<<<<< HEAD
+=======
+      --tw-translate-x: 0;
+      --tw-translate-y: 0;
+      --tw-translate-z: 0;
+>>>>>>> origin/develop_joseph
     }
   }
 }

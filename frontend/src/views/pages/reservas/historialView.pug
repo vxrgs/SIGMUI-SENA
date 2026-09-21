@@ -1,0 +1,48 @@
+extends ../../layouts/admin.pug
+
+block content
+  .flex.flex-col.py-8.px-6.max-w-7xl.mx-auto
+    //- Encabezado
+    .mb-8
+      h1.font-heading.text-3xl.font-extrabold.text-gray-50.mb-1 Mi Historial
+      p.text-sm.text-gray-400 Registros de todas tus reservaciones en la plataforma
+
+    //- Tarjetas de Resumen
+    .grid.grid-cols-1(class="sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6")
+      .bg-gray-900.border.border-gray-800.rounded-xl.p-5.transition-all.duration-200(class="hover:border-primary-500 hover:-translate-y-0.5")
+        h2#totalReservas.font-heading.text-4xl.font-bold.text-gray-50.mb-1 0
+        p.text-xs.font-medium.text-gray-400 Total reservas
+
+      .bg-gray-900.border.border-gray-800.rounded-xl.p-5.transition-all.duration-200(class="hover:border-emerald-500 hover:-translate-y-0.5")
+        h2#totalPagadas.font-heading.text-4xl.font-bold.text-emerald-400.mb-1 0
+        p.text-xs.font-medium.text-gray-400 Pagadas
+
+      .bg-gray-900.border.border-gray-800.rounded-xl.p-5.transition-all.duration-200(class="hover:border-warning hover:-translate-y-0.5")
+        h2#totalPendientes.font-heading.text-4xl.font-bold.text-warning.mb-1 0
+        p.text-xs.font-medium.text-gray-400 Pendientes
+
+      .bg-gray-900.border.border-gray-800.rounded-xl.p-5.transition-all.duration-200(class="hover:border-error hover:-translate-y-0.5")
+        h2#totalCanceladas.font-heading.text-4xl.font-bold.text-error.mb-1 0
+        p.text-xs.font-medium.text-gray-400 Canceladas
+
+    //- Filtros
+    .flex.flex-wrap.gap-2.mb-6
+      button.filtro-btn.active.rounded-full.border.border-primary-500.text-primary-400.text-xs.font-medium.transition-all(class="px-4 py-1.5 bg-primary-500/10 hover:bg-primary-500/20" type="button") Todas
+      button.filtro-btn.rounded-full.border.border-gray-800.text-gray-400.text-xs.font-medium.transition-all(class="px-4 py-1.5 hover:border-primary-500 hover:text-primary-400" type="button") Pagadas
+      button.filtro-btn.rounded-full.border.border-gray-800.text-gray-400.text-xs.font-medium.transition-all(class="px-4 py-1.5 hover:border-primary-500 hover:text-primary-400" type="button") Pendientes
+      button.filtro-btn.rounded-full.border.border-gray-800.text-gray-400.text-xs.font-medium.transition-all(class="px-4 py-1.5 hover:border-primary-500 hover:text-primary-400" type="button") Canceladas
+
+    //- Tabla de Historial
+    .w-full.bg-gray-900.border.border-gray-800.rounded-xl.overflow-hidden.shadow-xl
+      .hidden(class="md:grid grid-cols-7 px-5 py-3.5 bg-gray-950 border-b border-gray-800 text-xs font-bold text-gray-400 font-heading tracking-wider uppercase")
+        span CÓDIGO
+        span ZONA
+        span VEHÍCULO
+        span FECHA
+        span DURACIÓN
+        span MONTO
+        span ESTADO
+
+      .tabla-body.divide-y.divide-gray-800
+
+  script(src="/js/pages/historialReservas.js")
