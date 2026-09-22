@@ -58,11 +58,14 @@ const defaultUser = {
 };
 
 // ==========================================
-// RUTAS DE AUTENTICACIÓN
+// RUTAS DE AUTENTICACIÓN Y HOME
 // ==========================================
 
+// Página principal (Home) al entrar a la raíz del sitio
 app.get("/", (req, res) => {
-  res.redirect("/auth/login");
+  res.render("pages/homeView", {
+    title: "PARKALIA - Sistema de Gestión de Parqueaderos",
+  });
 });
 
 // Renderizar la pantalla de inicio de sesión (HU 02.1)
@@ -86,7 +89,7 @@ app.get("/auth/forgot-password", (req, res) => {
   });
 });
 
-// Renderizar la pantalla de (HU 02.3)
+// Renderizar la pantalla de verificación (HU 02.3)
 app.get("/auth/verify-code", (req, res) => {
   res.render("pages/auth/verifyCodeView", {
     title: "Verificar código",
@@ -108,8 +111,6 @@ app.get('/vehicles', (req, res) => {
     currentRoute: 'vehicles'
   });
 });
-
-
 
 // Procesar el inicio de sesión
 app.post("/auth/login", async (req, res) => {
@@ -159,7 +160,6 @@ app.post("/auth/forgot-password", async (req, res) => {
       user = mockUsers.find(u => u.email === email);
     }
 
-    // Respuesta visual provisional
     res.render("pages/auth/forgotPasswordView", {
       title: "Olvidaste tu contraseña",
       successMessage: "Si el correo existe en el sistema, enviamos el enlace de restablecimiento."

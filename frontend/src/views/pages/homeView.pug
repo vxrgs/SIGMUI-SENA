@@ -1,0 +1,84 @@
+doctype html
+html(lang="es")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title= title
+    link(rel="stylesheet" href="/css/output.css")
+  body(class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between font-sans selection:bg-emerald-500 selection:text-white relative overflow-x-hidden")
+
+    //- Imagen de fondo difuminada para imitar exactamente el banner de la foto
+    div(class="absolute top-0 right-0 w-full lg:w-7/12 h-[600px] bg-cover bg-center opacity-20 pointer-events-none" style="background-image: url('/img/mockup-parkalia.png'); mask-image: linear-gradient(to left, rgba(0,0,0,1), transparent); -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1), transparent);")
+
+    //- Barra de navegación superior idéntica a la referencia
+    header(class="w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between z-10")
+      div(class="flex items-center space-x-3")
+        div(class="bg-gradient-to-r from-blue-600 to-emerald-600 text-white p-2 rounded-xl font-bold text-xl flex items-center justify-center w-10 h-10 shadow-lg") P
+        span(class="font-extrabold text-xl tracking-wider text-white") PARKALIA
+      
+      nav(class="hidden md:flex items-center space-x-1 bg-slate-900/60 border border-slate-800/80 px-4 py-1.5 rounded-full backdrop-blur-md text-sm font-medium text-slate-300 shadow-xl")
+        a(href="/" class="px-4 py-1.5 rounded-full bg-slate-800 text-white font-semibold shadow-sm") Inicio
+        a(href="#caracteristicas" class="px-4 py-1.5 rounded-full hover:text-white hover:bg-slate-800/50 transition-colors") Características
+        a(href="#como-funciona" class="px-4 py-1.5 rounded-full hover:text-white hover:bg-slate-800/50 transition-colors") Cómo funciona
+        a(href="#contacto" class="px-4 py-1.5 rounded-full hover:text-white hover:bg-slate-800/50 transition-colors") Contacto
+
+      div(class="flex items-center space-x-4")
+        a(href="/auth/login" class="px-5 py-2.5 text-sm font-medium text-slate-300 hover:text-white transition-colors") Iniciar sesión
+        a(href="/auth/register" class="px-5 py-2.5 text-sm font-medium bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white rounded-xl shadow-lg shadow-emerald-900/20 transition-all") Registrarse
+
+    //- Sección Hero Principal
+    main(class="flex-grow container mx-auto px-6 py-8 lg:py-16 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center z-10")
+      div(class="lg:col-span-7 space-y-6")
+        div(class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-slate-800 text-emerald-400 text-xs font-medium shadow-inner")
+          span 🅿️
+          span Sistema de gestión de parqueaderos
+
+        h1(class="text-4xl md:text-6xl font-extrabold tracking-tight text-white leading-tight")
+          | Tu espacio, 
+          span(class="bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent") siempre disponible
+
+        p(class="text-slate-400 text-base md:text-lg max-w-xl leading-relaxed")
+          | PARKALIA es un sistema inteligente que te permite reservar, gestionar y pagar tu estacionamiento de forma rápida, segura y fácil. Disfruta de una movilidad urbana más eficiente.
+
+        div(class="flex flex-wrap gap-4 pt-2")
+          a(href="/auth/register" class="px-6.5 py-3.5 bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white font-semibold rounded-xl shadow-xl shadow-emerald-900/30 transition-all flex items-center space-x-2")
+            span 👤
+            span Registrarse
+          a(href="/auth/login" class="px-6.5 py-3.5 bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-200 font-semibold rounded-xl transition-all flex items-center space-x-2 backdrop-blur-md")
+            span 🔑
+            span Iniciar sesión
+
+      //- Columna Derecha: Mockup del Teléfono grande flotando
+      div(class="lg:col-span-5 flex justify-center relative")
+        div(class="relative w-full max-w-md transform lg:translate-x-4")
+          div(class="rounded-[2.55rem] overflow-hidden shadow-2xl border-4 border-slate-800/80 bg-slate-900 ring-1 ring-white/10")
+            img(src="/img/mockup-parkalia.png" alt="Mockup Parkalia App" class="w-full h-auto object-cover")
+
+    //- Sección de Características / Tarjetas inferiores idénticas a la referencia
+    section(id="caracteristicas" class="border-t border-slate-800/60 bg-slate-900/30 backdrop-blur-md py-12 px-6 z-10")
+      div(class="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8")
+        div(class="space-y-2 p-2")
+          div(class="text-2xl text-emerald-400") 📅
+          h3(class="font-semibold text-white") Reserva tu espacio
+          p(class="text-sm text-slate-400") Elige la zona y el horario que necesitas.
+
+        div(class="space-y-2 p-2")
+          div(class="text-2xl text-emerald-400") 🛡️
+          h3(class="font-semibold text-white") Pago seguro
+          p(class="text-sm text-slate-400") Simula y realiza tu pago de forma rápida.
+
+        div(class="space-y-2 p-2")
+          div(class="text-2xl text-emerald-400") 📍
+          h3(class="font-semibold text-white") Ubicación en tiempo real
+          p(class="text-sm text-slate-400") Encuentra las zonas de parqueo disponibles.
+
+        div(class="space-y-2 p-2")
+          div(class="text-2xl text-emerald-400") 💬
+          h3(class="font-semibold text-white") Soporte por WhatsApp
+          p(class="text-sm text-slate-400") ¿Dudas? Escríbenos directamente.
+
+    //- Footer
+    footer(class="py-8 px-6 border-t border-slate-800/60 bg-slate-950 text-center text-xs text-slate-500 space-y-3 z-10")
+      p Una ciudad más organizada, empieza con un buen parqueo
+      div(class="flex items-center justify-center space-x-2 text-slate-400")
+        span(class="font-bold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent") PARKALIA
