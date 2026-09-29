@@ -1,6 +1,6 @@
 //- Toast emergente interactivo
 #toastBox
-  span(style="width:8px; height:8px; background:#1db869; border-radius:50%; box-shadow:0 0 8px #1db869;")
+  span(style="width:8px; height:8px; background:#1db869; border-radius:50%; box-shadow:0 0 8px #1db869; flex-shrink: 0;")
   div
     h5#toastTitle(style="font-size: 11px; font-weight: 700; color: #fff;") Notificación PARKALIA
     p#toastMsg(style="font-size: 10px; color: #58718e;") Acción completada con éxito.
@@ -10,12 +10,12 @@ canvas#bgCanvas(style="position: fixed; inset: 0; pointer-events: none; z-index:
 
 //- ── HEADER / NAVBAR ──────────────────────────────────────────────
 header#mainHeader.w-full.sticky.top-0.z-50(style="border-bottom: 1px solid #162438; background: rgba(3, 7, 11, 0.92); backdrop-filter: blur(16px);")
-  .max-w-7xl.mx-auto.px-8.h-20.flex.items-center.justify-between
+  .max-w-7xl.mx-auto.px-4(class="sm:px-8", style="height: 68px; display: flex; align-items: center; justify-content: space-between;")
 
     a.logo-brand(href="#inicio", onclick="scrollToTop(event)")
       img.logo-img-main(src="/img/parkalia.png", alt="PARKALIA")
 
-    nav#desktopNav.hidden(class="md:flex", style="align-items: center; gap: 28px;")
+    nav#desktopNav.hidden(class="md:flex", style="align-items: center; gap: 24px;")
       a.nav-item.active(href="#inicio", data-section="inicio") Inicio
       a.nav-item(href="#caracteristicas", data-section="caracteristicas") Características
       a.nav-item(href="#como-funciona", data-section="como-funciona") Cómo funciona
@@ -27,119 +27,120 @@ header#mainHeader.w-full.sticky.top-0.z-50(style="border-bottom: 1px solid #1624
       a.btn-outline-cyber(href="/auth/login", style="font-size: 12px; font-weight: 500; padding: 7px 16px; border-radius: 8px;") Iniciar sesión
       a.btn-gradient(href="/auth/register", style="font-size: 12px; padding: 7px 20px; border-radius: 8px;") Registrarse
 
-    button.block(class="md:hidden", onclick="toggleMobileMenu()", style="background:none; border:none; color:#1db869; font-size:22px; cursor:pointer;") ☰
+    button.block(class="md:hidden", onclick="toggleMobileMenu()", aria-label="Abrir menú", style="background:none; border:none; color:#1db869; font-size:24px; cursor:pointer; padding: 4px;") ☰
 
 //- ── MENÚ MÓVIL ───────────────────────────────────────────────────
-#mobileMenu.fixed.top-0.right-0.w-64.h-full.p-6.z-50.border-l.border-gray-800.shadow-2xl.flex.flex-col.justify-between(style="display: flex; background: #03070b;")
+#mobileMenu.fixed.top-0.right-0.h-full.p-6.z-50.border-l.border-gray-800.shadow-2xl.flex.flex-col.justify-between(style="display: flex; background: #03070b;")
   div
     .flex.justify-between.items-center.mb-8
-      img(src="/img/parkalia.png", alt="PARKALIA", style="height: 32px; width: auto; object-fit: contain;")
-      button(onclick="toggleMobileMenu()", style="color:#58718e; font-size:20px; background:none; border:none; cursor:pointer;") ✕
-    nav.flex.flex-col.gap-4
-      a(href="#inicio", onclick="toggleMobileMenu()", style="font-size: 13px; color: #1db869;") Inicio
-      a(href="#caracteristicas", onclick="toggleMobileMenu()", style="font-size: 13px; color: #58718e;") Características
-      a(href="#como-funciona", onclick="toggleMobileMenu()", style="font-size: 13px; color: #58718e;") Cómo funciona
-      a(href="#calculadora", onclick="toggleMobileMenu()", style="font-size: 13px; color: #58718e;") Cotizador
-      a(href="#zonas", onclick="toggleMobileMenu()", style="font-size: 13px; color: #58718e;") Zonas en vivo
-      a(href="#faq", onclick="toggleMobileMenu()", style="font-size: 13px; color: #58718e;") Preguntas
+      img(src="/img/parkalia.png", alt="PARKALIA", style="height: 28px; width: auto; object-fit: contain;")
+      button(onclick="toggleMobileMenu()", aria-label="Cerrar menú", style="color:#58718e; font-size:22px; background:none; border:none; cursor:pointer; padding: 4px;") ✕
+    nav.flex.flex-col.gap-5
+      a(href="#inicio", onclick="toggleMobileMenu()", style="font-size: 14px; font-weight: 600; color: #1db869;") Inicio
+      a(href="#caracteristicas", onclick="toggleMobileMenu()", style="font-size: 14px; color: #cbd5e1;") Características
+      a(href="#como-funciona", onclick="toggleMobileMenu()", style="font-size: 14px; color: #cbd5e1;") Cómo funciona
+      a(href="#calculadora", onclick="toggleMobileMenu()", style="font-size: 14px; color: #cbd5e1;") Cotizador
+      a(href="#zonas", onclick="toggleMobileMenu()", style="font-size: 14px; color: #cbd5e1;") Zonas en vivo
+      a(href="#faq", onclick="toggleMobileMenu()", style="font-size: 14px; color: #cbd5e1;") Preguntas
   div.flex.flex-col.gap-3
-    a.btn-outline-cyber.text-center(href="/auth/login", style="padding: 9px; border-radius: 8px; font-size: 12px;") Iniciar sesión
-    a.btn-gradient.text-center(href="/auth/register", style="padding: 9px; border-radius: 8px; font-size: 12px;") Registrarse
+    a.btn-outline-cyber.text-center(href="/auth/login", style="padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 600;") Iniciar sesión
+    a.btn-gradient.text-center(href="/auth/register", style="padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 700;") Registrarse
 
 //- ── HERO PRINCIPAL ────────────────────────────────────────────────
-main#inicio.relative.flex-1.hero-bg.flex.items-center(style="min-height: 540px; z-index: 10;")
-  .max-w-7xl.mx-auto.px-8.w-full.py-8.grid.grid-cols-1(class="lg:grid-cols-12", style="gap: 28px; align-items: center;")
+main#inicio.relative.flex-1.hero-bg.flex.items-center(style="min-height: 520px; z-index: 10; padding: 36px 0;")
+  .max-w-7xl.mx-auto.px-4(class="sm:px-8", style="width: 100%;")
+    .grid.grid-cols-1(class="lg:grid-cols-12", style="gap: 36px; align-items: center;")
 
-    //- Izquierda: Contenido
-    div(class="lg:col-span-7", style="max-width: 530px;")
-      div(style="display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px; border-radius: 9999px; background: #071a1c; border: 1px solid #0e3d36; color: #10b981; font-size: 10px; font-weight: 600; margin-bottom: 18px;")
-        span(style="width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981;")
-        span.font-mono SISTEMA ACTIVO // v2.6.4
+      //- Izquierda: Contenido
+      div(class="lg:col-span-7 text-center lg:text-left flex flex-col items-center lg:items-start", style="max-width: 560px; margin: 0 auto;")
+        div(style="display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px; border-radius: 9999px; background: #071a1c; border: 1px solid #0e3d36; color: #10b981; font-size: 10px; font-weight: 600; margin-bottom: 16px;")
+          span(style="width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981;")
+          span.font-mono SISTEMA ACTIVO // v2.6.4
 
-      h1.font-display(style="font-size: 46px; font-weight: 800; line-height: 1.08; color: #fff; letter-spacing: -0.5px; margin-bottom: 16px;")
-        | Tu espacio,
-        br
-        span(style="color: #2b7ec9; text-shadow: 0 0 25px rgba(43,126,201,0.35);") siempre disponible
+        h1.font-display(style="font-size: clamp(32px, 5vw, 46px); font-weight: 800; line-height: 1.1; color: #fff; letter-spacing: -0.5px; margin-bottom: 16px;")
+          | Tu espacio,
+          br
+          span(style="color: #2b7ec9; text-shadow: 0 0 25px rgba(43,126,201,0.35);") siempre disponible
 
-      p(style="color: #58718e; font-size: 13px; line-height: 1.6; margin-bottom: 26px;")
-        | PARKALIA es un ecosistema inteligente de movilidad urbana que te permite reservar, pagar y acceder a estacionamientos en tiempo real desde tu smartphone[cite: 8].
+        p(style="color: #58718e; font-size: 13px; line-height: 1.6; margin-bottom: 24px; max-width: 480px;")
+          | PARKALIA es un ecosistema inteligente de movilidad urbana que te permite reservar, pagar y acceder a estacionamientos en tiempo real desde tu smartphone[cite: 8].
 
-      //- Botones
-      .flex.items-center.gap-4
-        a.hero-btn-primary(href="/auth/register")
-          svg(style="width: 14px; height: 14px;", viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2.2")
-            path(d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2")
-            circle(cx="9", cy="7", r="4")
-            line(x1="19", x2="19", y1="8", y2="14")
-            line(x1="22", x2="16", y1="11", y2="11")
-          span Registrarse Ahora
-        
-        a.hero-btn-secondary(href="#zonas")
-          svg(style="width: 14px; height: 14px; color: #2b7ec9;", viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2.2")
-            circle(cx="12", cy="12", r="10")
-            polygon(points="12 8 8 12 12 16 12 8")
-          span Explorar Radar
-
-    //- Derecha: Mockup 3D
-    .flex.justify-center.items-center.relative.perspective-scene(class="lg:col-span-5")
-      .card-back-cyan(style="position: absolute; width: 250px; height: 440px; background: #2b7ec9; border-radius: 36px; opacity: 0.8; pointer-events: none;")
-      .card-back-mint(style="position: absolute; width: 255px; height: 450px; background: #1db869; border-radius: 36px; opacity: 0.85; pointer-events: none;")
-
-      #interactivePhone(style="position: relative; width: 275px; height: 495px; border-radius: 42px; overflow: hidden; padding: 6px; display: flex; flex-direction: column;")
-        div(style="width: 100%; height: 100%; background: #0c1624; border-radius: 30px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; color: #f1f5f9; position: relative; border: 1px solid rgba(255,255,255,0.08); box-shadow: inset 0 2px 8px rgba(0,0,0,0.6);")
+        //- Botones Hero con presencia sólida y ergonomía táctil
+        .hero-buttons-container.flex.flex-col(style="gap: 14px; width: 100%; max-width: 440px; margin-top: 6px;")
+          a.hero-btn-primary(href="/auth/register")
+            svg(style="width: 20px; height: 20px; flex-shrink: 0;", viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2.3")
+              path(d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2")
+              circle(cx="9", cy="7", r="4")
+              line(x1="19", x2="19", y1="8", y2="14")
+              line(x1="22", x2="16", y1="11", y2="11")
+            span Registrarse Ahora
           
-          // Status bar
-          div(style="padding: 9px 16px 3px; display: flex; justify-content: space-between; align-items: center; font-size: 9px; font-weight: 700; color: #738ca6; background: rgba(12,22,36,0.9);")
-            span.font-mono#liveClock 09:41
-            div(style="width: 44px; height: 6px; background: #060b12; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.05);")
-            span.font-mono(style="color: #1db869;") 5G 100%
+          a.hero-btn-secondary(href="#zonas")
+            svg(style="width: 20px; height: 20px; color: #38bdf8; flex-shrink: 0;", viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2.3")
+              circle(cx="12", cy="12", r="10")
+              polygon(points="12 8 8 12 12 16 12 8")
+            span Explorar Radar
 
-          // App Topbar
-          div(style="padding: 7px 14px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(34, 53, 77, 0.7); background: rgba(15, 27, 43, 0.6);")
-            button(onclick="showToast('Menú Móvil', 'Inicia sesión para ver tu panel personal')", style="background:none; border:none; color:#2b7ec9; font-size:13px; cursor:pointer;") ☰
-            img.logo-img-phone(src="/img/parkalia.png", alt="PARKALIA")
-            button(onclick="showToast('Ajustes', 'Configuración de geolocalización activa')", style="background:none; border:none; color:#738ca6; font-size:11px; cursor:pointer;") ⚙
+      //- Derecha: Mockup 3D
+      .flex.justify-center.items-center.relative.perspective-scene(class="lg:col-span-5", style="margin-top: 20px;")
+        .card-back-cyan(style="position: absolute; border-radius: 36px; opacity: 0.8; pointer-events: none; background: #2b7ec9;")
+        .card-back-mint(style="position: absolute; border-radius: 36px; opacity: 0.85; pointer-events: none; background: #1db869;")
 
-          // Mapa Interactivo
-          div(style="flex: 1; margin: 4px 6px; background: #08101a; border-radius: 16px; position: relative; overflow: hidden; border: 1px solid #1a293d;")
-            svg(style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.9;", xmlns="http://www.w3.org/2000/svg")
-              line(x1="0", y1="45", x2="300", y2="80", stroke="#17263c", stroke-width="11")
-              line(x1="70", y1="0", x2="105", y2="400", stroke="#17263c", stroke-width="13")
-              line(x1="0", y1="160", x2="300", y2="135", stroke="#17263c", stroke-width="15")
-              line(x1="190", y1="0", x2="160", y2="400", stroke="#17263c", stroke-width="10")
-              rect(x="10", y="70", width="50", height="60", rx="6", fill="#092823", stroke="#0f4a41", stroke-width="1")
-              rect(x="170", y="165", width="50", height="50", rx="6", fill="#092823", stroke="#0f4a41", stroke-width="1")
+        #interactivePhone(style="position: relative; border-radius: 40px; overflow: hidden; padding: 6px; display: flex; flex-direction: column;")
+          div(style="width: 100%; height: 100%; background: #0c1624; border-radius: 30px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; color: #f1f5f9; position: relative; border: 1px solid rgba(255,255,255,0.08); box-shadow: inset 0 2px 8px rgba(0,0,0,0.6);")
+            
+            // Status bar
+            div(style="padding: 9px 16px 3px; display: flex; justify-content: space-between; align-items: center; font-size: 9px; font-weight: 700; color: #738ca6; background: rgba(12,22,36,0.9);")
+              span.font-mono#liveClock 09:41
+              div(style="width: 44px; height: 6px; background: #060b12; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.05);")
+              span.font-mono(style="color: #1db869;") 5G 100%
 
-            div(style="position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); width: 100px; height: 100px; background: rgba(43,126,201,0.15); border: 1px solid rgba(29,184,105,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; pointer-events: none;")
-              div(style="width: 8px; height: 8px; background: #2b7ec9; border-radius: 50%; box-shadow: 0 0 0 3px #1db869;")
+            // App Topbar
+            div(style="padding: 7px 14px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(34, 53, 77, 0.7); background: rgba(15, 27, 43, 0.6);")
+              button(onclick="showToast('Menú Móvil', 'Inicia sesión para ver tu panel personal')", style="background:none; border:none; color:#2b7ec9; font-size:13px; cursor:pointer;") ☰
+              img.logo-img-phone(src="/img/parkalia.png", alt="PARKALIA")
+              button(onclick="showToast('Ajustes', 'Configuración de geolocalización activa')", style="background:none; border:none; color:#738ca6; font-size:11px; cursor:pointer;") ⚙
 
-            .pin-pulse#pinCentro(onclick="updateMockup('Zona Centro A', 'Calle 15 #8-20', 14, '$2.500/h', 'centro-a')", style="position: absolute; top: 22px; left: 32px; width: 20px; height: 20px; background: #2b7ec9; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; z-index: 5; box-shadow: 0 0 12px rgba(43,126,201,0.7);") P
-            .pin-pulse#pinNorte(onclick="updateMockup('Zona Norte B', 'Carrera 10 #24-45', 3, '$3.000/h', 'norte-b')", style="position: absolute; top: 50px; right: 28px; width: 20px; height: 20px; background: #1db869; color: #03070b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; z-index: 5; box-shadow: 0 0 12px rgba(29,184,105,0.7);") P
-            .pin-pulse#pinSur(onclick="updateMockup('Zona Sur C', 'Calle 80 #12-10', 12, '$2.000/h', 'sur-c')", style="position: absolute; bottom: 24px; left: 42px; width: 20px; height: 20px; background: #2b7ec9; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; z-index: 5; box-shadow: 0 0 12px rgba(43,126,201,0.7);") P
+            // Mapa Interactivo
+            div(style="flex: 1; margin: 4px 6px; background: #08101a; border-radius: 16px; position: relative; overflow: hidden; border: 1px solid #1a293d;")
+              svg(style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.9;", xmlns="http://www.w3.org/2000/svg")
+                line(x1="0", y1="45", x2="300", y2="80", stroke="#17263c", stroke-width="11")
+                line(x1="70", y1="0", x2="105", y2="400", stroke="#17263c", stroke-width="13")
+                line(x1="0", y1="160", x2="300", y2="135", stroke="#17263c", stroke-width="15")
+                line(x1="190", y1="0", x2="160", y2="400", stroke="#17263c", stroke-width="10")
+                rect(x="10", y="70", width="50", height="60", rx="6", fill="#092823", stroke="#0f4a41", stroke-width="1")
+                rect(x="170", y="165", width="50", height="50", rx="6", fill="#092823", stroke="#0f4a41", stroke-width="1")
 
-          // Tarjeta inferior de reserva
-          div(style="margin: 4px 6px 6px; background: #0f1c2d; border-radius: 14px; padding: 11px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); border: 1px solid #1e334d;")
-            div(style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;")
-              div
-                div#mkTitle(style="font-size: 11px; font-weight: 800; color: #ffffff;") Zona Centro A
-                div#mkAddress(style="font-size: 9px; color: #738ca6;") Calle 15 #8-20
-              span#mkPrice.font-mono(style="font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 9999px; background: #082420; color: #10b981; border: 1px solid #0f4a41;") $2.500/h
+              div(style="position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); width: 100px; height: 100px; background: rgba(43,126,201,0.15); border: 1px solid rgba(29,184,105,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; pointer-events: none;")
+                div(style="width: 8px; height: 8px; background: #2b7ec9; border-radius: 50%; box-shadow: 0 0 0 3px #1db869;")
 
-            div(style="font-size: 9px; font-weight: 600; color: #9bb1c8; margin-bottom: 7px; display: flex; align-items: center; gap: 5px;")
-              span(style="width: 5px; height: 5px; background: #1db869; border-radius: 50%; box-shadow: 0 0 6px #1db869;")
-              span#mkSpots 14 espacios disponibles
+              .pin-pulse#pinCentro(onclick="updateMockup('Zona Centro A', 'Calle 15 #8-20', 14, '$2.500/h', 'centro-a')", style="position: absolute; top: 22px; left: 32px; width: 20px; height: 20px; background: #2b7ec9; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; z-index: 5; box-shadow: 0 0 12px rgba(43,126,201,0.7);") P
+              .pin-pulse#pinNorte(onclick="updateMockup('Zona Norte B', 'Carrera 10 #24-45', 3, '$3.000/h', 'norte-b')", style="position: absolute; top: 50px; right: 28px; width: 20px; height: 20px; background: #1db869; color: #03070b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; z-index: 5; box-shadow: 0 0 12px rgba(29,184,105,0.7);") P
+              .pin-pulse#pinSur(onclick="updateMockup('Zona Sur C', 'Calle 80 #12-10', 12, '$2.000/h', 'sur-c')", style="position: absolute; bottom: 24px; left: 42px; width: 20px; height: 20px; background: #2b7ec9; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; z-index: 5; box-shadow: 0 0 12px rgba(43,126,201,0.7);") P
 
-            button#btnReserveDemo.btn-gradient(onclick="executePhoneBooking()", style="width: 100%; padding: 7px 0; border: none; border-radius: 7px; font-size: 10px; cursor: pointer;") Confirmar Reserva
+            // Tarjeta inferior de reserva
+            div(style="margin: 4px 6px 6px; background: #0f1c2d; border-radius: 14px; padding: 11px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); border: 1px solid #1e334d;")
+              div(style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;")
+                div
+                  div#mkTitle(style="font-size: 11px; font-weight: 800; color: #ffffff;") Zona Centro A
+                  div#mkAddress(style="font-size: 9px; color: #738ca6;") Calle 15 #8-20
+                span#mkPrice.font-mono(style="font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 9999px; background: #082420; color: #10b981; border: 1px solid #0f4a41;") $2.500/h
+
+              div(style="font-size: 9px; font-weight: 600; color: #9bb1c8; margin-bottom: 7px; display: flex; align-items: center; gap: 5px;")
+                span(style="width: 5px; height: 5px; background: #1db869; border-radius: 50%; box-shadow: 0 0 6px #1db869;")
+                span#mkSpots 14 espacios disponibles
+
+              button#btnReserveDemo.btn-gradient(onclick="executePhoneBooking()", style="width: 100%; padding: 7px 0; border: none; border-radius: 7px; font-size: 10px; cursor: pointer;") Confirmar Reserva
 
 //- ── 4 CARACTERÍSTICAS INFERIORES ─────────────────────────────────
-section#caracteristicas.w-full(style="border-top: 1px solid #162438; background: #03070b; padding: 60px 0; z-index: 10; position: relative;")
-  .max-w-7xl.mx-auto.px-8
+section#caracteristicas.w-full(style="border-top: 1px solid #162438; background: #03070b; padding: 50px 0; z-index: 10; position: relative;")
+  .max-w-7xl.mx-auto.px-4(class="sm:px-8")
     .text-center(style="max-width: 480px; margin: 0 auto 36px;")
       div(style="color: #1db869; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px;") Innovación en parqueo
-      h2.font-display(style="font-size: 26px; font-weight: 800; color: #fff;") Tecnología pensada para ti
+      h2.font-display(style="font-size: clamp(22px, 4vw, 26px); font-weight: 800; color: #fff;") Tecnología pensada para ti
       p(style="font-size: 12px; color: #58718e; margin-top: 4px;") Control total de tu estacionamiento con interfaz intuitiva y rápida[cite: 8].
 
-    .grid.grid-cols-1(class="sm:grid-cols-2 lg:grid-cols-4", style="gap: 20px;")
+    .grid.grid-cols-1(class="sm:grid-cols-2 lg:grid-cols-4", style="gap: 16px;")
       .feature-card(style="padding: 18px; border-radius: 12px;")
         div(style="width: 36px; height: 36px; border-radius: 8px; background: rgba(43,126,201,0.12); border: 1px solid rgba(43,126,201,0.25); color: #2b7ec9; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;")
           svg(style="width: 18px; height: 18px;", viewBox="0 0 24 24", fill="none", stroke="currentColor", stroke-width="2")
@@ -174,68 +175,68 @@ section#caracteristicas.w-full(style="border-top: 1px solid #162438; background:
         p(style="font-size: 11px; color: #58718e; margin-top: 4px; line-height: 1.45;") Atención en línea para solventar dudas o imprevistos de forma directa[cite: 8].
 
 //- ── SECCIÓN 2: CÓMO FUNCIONA ─────────────────────────────────────
-section#como-funciona.w-full(style="border-top: 1px solid #162438; background: #08101a; padding: 60px 0; z-index: 10; position: relative;")
-  .max-w-7xl.mx-auto.px-8
-    .text-center(style="max-width: 480px; margin: 0 auto 40px;")
+section#como-funciona.w-full(style="border-top: 1px solid #162438; background: #08101a; padding: 50px 0; z-index: 10; position: relative;")
+  .max-w-7xl.mx-auto.px-4(class="sm:px-8")
+    .text-center(style="max-width: 480px; margin: 0 auto 36px;")
       div(style="color: #1db869; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px;") Proceso simple
-      h2.font-display(style="font-size: 26px; font-weight: 800; color: #fff;") Estacionar nunca fue tan fácil
+      h2.font-display(style="font-size: clamp(22px, 4vw, 26px); font-weight: 800; color: #fff;") Estacionar nunca fue tan fácil
       p(style="font-size: 12px; color: #58718e; margin-top: 6px;") Completa tu reserva en 3 pasos antes de salir de casa.
 
-    .grid.grid-cols-1(class="md:grid-cols-3", style="gap: 24px;")
-      .feature-card(style="padding: 24px 20px; border-radius: 14px; position: relative;")
+    .grid.grid-cols-1(class="md:grid-cols-3", style="gap: 20px;")
+      .feature-card(style="padding: 22px 18px; border-radius: 14px; position: relative;")
         span.font-display(style="font-size: 32px; font-weight: 800; color: rgba(43,126,201,0.2); position: absolute; top: 12px; right: 16px;") 01
         h4(style="font-size: 14px; font-weight: 700; color: #2b7ec9; margin-bottom: 8px;") 1. Elige tu zona
         p(style="font-size: 11px; color: #58718e; line-height: 1.5;") Explora el mapa y verifica la disponibilidad de celdas y tarifas por hora según tu destino[cite: 8].
 
-      .feature-card(style="padding: 24px 20px; border-radius: 14px; position: relative;")
+      .feature-card(style="padding: 22px 18px; border-radius: 14px; position: relative;")
         span.font-display(style="font-size: 32px; font-weight: 800; color: rgba(29,184,105,0.2); position: absolute; top: 12px; right: 16px;") 02
         h4(style="font-size: 14px; font-weight: 700; color: #1db869; margin-bottom: 8px;") 2. Reserva y confirma
         p(style="font-size: 11px; color: #58718e; line-height: 1.5;") Selecciona tu vehículo registrado y confirma el horario para garantizar tu espacio sin esperas[cite: 8].
 
-      .feature-card(style="padding: 24px 20px; border-radius: 14px; position: relative;")
+      .feature-card(style="padding: 22px 18px; border-radius: 14px; position: relative;")
         span.font-display(style="font-size: 32px; font-weight: 800; color: rgba(43,126,201,0.2); position: absolute; top: 12px; right: 16px;") 03
         h4(style="font-size: 14px; font-weight: 700; color: #2b7ec9; margin-bottom: 8px;") 3. Llega y estaciona
         p(style="font-size: 11px; color: #58718e; line-height: 1.5;") Muestra tu código de acceso digital en la entrada y disfruta de tu estadía sin preocupaciones.
 
 //- ── SECCIÓN INTERACTIVA: COTIZADOR EN VIVO ────────────────────────
-section#calculadora.w-full(style="border-top: 1px solid #162438; background: #03070b; padding: 60px 0; z-index: 10; position: relative;")
-  .max-w-4xl.mx-auto.px-8
-    .feature-card(style="padding: 30px; border-radius: 16px; border-color: rgba(29,184,105,0.3);")
-      .grid.grid-cols-1(class="md:grid-cols-2", style="gap: 32px; align-items: center;")
+section#calculadora.w-full(style="border-top: 1px solid #162438; background: #03070b; padding: 50px 0; z-index: 10; position: relative;")
+  .max-w-4xl.mx-auto.px-4(class="sm:px-8")
+    .feature-card(style="padding: clamp(20px, 4vw, 30px); border-radius: 16px; border-color: rgba(29,184,105,0.3);")
+      .grid.grid-cols-1(class="md:grid-cols-2", style="gap: 28px; align-items: center;")
         div
           div(style="color: #1db869; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px;") Cotizador interactivo
-          h3.font-display(style="font-size: 22px; font-weight: 800; color: #fff;") Calcula el costo de tu estadía
+          h3.font-display(style="font-size: clamp(20px, 3.5vw, 22px); font-weight: 800; color: #fff;") Calcula el costo de tu estadía
           p(style="font-size: 11px; color: #58718e; margin-top: 6px; line-height: 1.5;") Ajusta la zona y las horas estimadas para conocer el total antes de confirmar.
         
         div.space-y-4
           div
             label(style="font-size: 11px; font-weight: 600; color: #cbd5e1; display: block; margin-bottom: 6px;") Selecciona la Zona:
-            select#calcZone(onchange="calculateTotal()", style="width: 100%; padding: 8px 12px; background: #0a111b; border: 1px solid #162438; border-radius: 8px; color: #fff; font-size: 12px; outline: none;")
+            select#calcZone(onchange="calculateTotal()", style="width: 100%; padding: 10px 12px; background: #0a111b; border: 1px solid #162438; border-radius: 8px; color: #fff; font-size: 12px; outline: none;")
               option(value="2500") Zona Centro A ($2.500/h)
               option(value="3000") Zona Norte B ($3.000/h)
               option(value="2000") Zona Sur C ($2.000/h)
               option(value="2800") Zona Occidental D ($2.800/h)
 
           div
-            .flex.justify-between(style="font-size: 11px; color: #cbd5e1; margin-bottom: 4px;")
+            .flex.justify-between(style="font-size: 11px; color: #cbd5e1; margin-bottom: 6px;")
               span Horas estimadas:
               span#calcHoursText.font-mono(style="color: #1db869; font-weight: 700;") 2 horas
-            input#calcHours(type="range", min="1", max="12", value="2", oninput="calculateTotal()", style="width: 100%; accent-color: #1db869; cursor: pointer;")
+            input#calcHours(type="range", min="1", max="12", value="2", oninput="calculateTotal()", style="width: 100%; accent-color: #1db869; cursor: pointer; height: 6px;")
 
           div(style="border-top: 1px solid #162438; padding-top: 12px; display: flex; justify-content: space-between; align-items: center;")
             span(style="font-size: 12px; color: #58718e;") Total estimado:
-            span#calcTotal.font-mono(style="font-size: 22px; font-weight: 800; color: #1db869;") $5.000 COP
+            span#calcTotal.font-mono(style="font-size: clamp(18px, 4vw, 22px); font-weight: 800; color: #1db869;") $5.000 COP
 
-          button.btn-gradient(onclick="goToBookingWithEstimate()", style="width: 100%; padding: 9px 0; border: none; border-radius: 8px; font-size: 11px; cursor: pointer;") Reservar con esta tarifa
+          button.btn-gradient(onclick="goToBookingWithEstimate()", style="width: 100%; padding: 11px 0; border: none; border-radius: 8px; font-size: 12px; cursor: pointer;") Reservar con esta tarifa
 
 //- ── SECCIÓN ZONAS ACTIVAS ────────────────────────────────────────
-section#zonas.w-full(style="border-top: 1px solid #162438; background: #08101a; padding: 60px 0; z-index: 10; position: relative;")
-  .max-w-7xl.mx-auto.px-8
-    .flex.flex-col(class="md:flex-row md:items-end justify-between", style="margin-bottom: 32px; gap: 16px;")
+section#zonas.w-full(style="border-top: 1px solid #162438; background: #08101a; padding: 50px 0; z-index: 10; position: relative;")
+  .max-w-7xl.mx-auto.px-4(class="sm:px-8")
+    .flex.flex-col(class="sm:flex-row sm:items-end justify-between", style="margin-bottom: 28px; gap: 14px;")
       div
         div(style="color: #1db869; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px;") Red satelital
-        h2.font-display(style="font-size: 26px; font-weight: 800; color: #fff;") Zonas de Parqueo Habilitadas
-      a.btn-gradient(href="/zonas", style="font-size: 11px; padding: 8px 18px; border-radius: 8px; text-decoration: none;") Ver mapa completo
+        h2.font-display(style="font-size: clamp(22px, 4vw, 26px); font-weight: 800; color: #fff;") Zonas de Parqueo Habilitadas
+      a.btn-gradient(href="/zonas", style="font-size: 11px; padding: 8px 18px; border-radius: 8px; text-decoration: none; align-self: flex-start;") Ver mapa completo
 
     .grid.grid-cols-1(class="sm:grid-cols-2 lg:grid-cols-4", style="gap: 16px;")
       .feature-card(style="padding: 16px; border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between;")
@@ -247,7 +248,7 @@ section#zonas.w-full(style="border-top: 1px solid #162438; background: #08101a; 
             span.font-mono(style="font-size: 9px; font-weight: 700; color: #1db869; background: rgba(29,184,105,0.1); border: 1px solid rgba(29,184,105,0.25); padding: 2px 6px; border-radius: 9999px;") 14 Libres
           div.font-mono(style="font-size: 12px; font-weight: 700; color: #2b7ec9; margin-top: 8px;") $2.500 / hora
           p(style="font-size: 10px; color: #58718e;") Horario: 6:00 AM — 10:00 PM
-        a.btn-gradient(href="/pagos?zoneId=centro-a", style="margin-top: 14px; padding: 7px 0; font-size: 11px; border-radius: 6px; width: 100%; text-decoration: none;") Apartar Cupo
+        a.btn-gradient(href="/pagos?zoneId=centro-a", style="margin-top: 14px; padding: 8px 0; font-size: 11px; border-radius: 6px; width: 100%; text-decoration: none;") Apartar Cupo
 
       .feature-card(style="padding: 16px; border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between;")
         div
@@ -258,7 +259,7 @@ section#zonas.w-full(style="border-top: 1px solid #162438; background: #08101a; 
             span.font-mono(style="font-size: 9px; font-weight: 700; color: #eab308; background: rgba(234,179,8,0.1); border: 1px solid rgba(234,179,8,0.25); padding: 2px 6px; border-radius: 9999px;") 3 Libres
           div.font-mono(style="font-size: 12px; font-weight: 700; color: #2b7ec9; margin-top: 8px;") $3.000 / hora
           p(style="font-size: 10px; color: #58718e;") Horario: 7:00 AM — 9:00 PM
-        a.btn-gradient(href="/pagos?zoneId=norte-b", style="margin-top: 14px; padding: 7px 0; font-size: 11px; border-radius: 6px; width: 100%; text-decoration: none;") Apartar Cupo
+        a.btn-gradient(href="/pagos?zoneId=norte-b", style="margin-top: 14px; padding: 8px 0; font-size: 11px; border-radius: 6px; width: 100%; text-decoration: none;") Apartar Cupo
 
       .feature-card(style="padding: 16px; border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between;")
         div
@@ -269,7 +270,7 @@ section#zonas.w-full(style="border-top: 1px solid #162438; background: #08101a; 
             span.font-mono(style="font-size: 9px; font-weight: 700; color: #1db869; background: rgba(29,184,105,0.1); border: 1px solid rgba(29,184,105,0.25); padding: 2px 6px; border-radius: 9999px;") 12 Libres
           div.font-mono(style="font-size: 12px; font-weight: 700; color: #2b7ec9; margin-top: 8px;") $2.000 / hora
           p(style="font-size: 10px; color: #58718e;") Horario: 24 Horas
-        a.btn-gradient(href="/pagos?zoneId=sur-c", style="margin-top: 14px; padding: 7px 0; font-size: 11px; border-radius: 6px; width: 100%; text-decoration: none;") Apartar Cupo
+        a.btn-gradient(href="/pagos?zoneId=sur-c", style="margin-top: 14px; padding: 8px 0; font-size: 11px; border-radius: 6px; width: 100%; text-decoration: none;") Apartar Cupo
 
       .feature-card(style="padding: 16px; border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between;")
         div
@@ -280,36 +281,36 @@ section#zonas.w-full(style="border-top: 1px solid #162438; background: #08101a; 
             span.font-mono(style="font-size: 9px; font-weight: 700; color: #f43f5e; background: rgba(244,63,94,0.1); border: 1px solid rgba(244,63,94,0.25); padding: 2px 6px; border-radius: 9999px;") Lleno
           div.font-mono(style="font-size: 12px; font-weight: 700; color: #2b7ec9; margin-top: 8px;") $2.800 / hora
           p(style="font-size: 10px; color: #58718e;") Horario: 6:00 AM — 11:00 PM
-        button.btn-outline-cyber(onclick="showToast('Zona Completa', 'Te avisaremos cuando se libere un espacio')", style="margin-top: 14px; padding: 7px 0; font-size: 11px; border-radius: 6px; width: 100%; cursor: pointer;") Lista de Espera
+        button.btn-outline-cyber(onclick="showToast('Zona Completa', 'Te avisaremos cuando se libere un espacio')", style="margin-top: 14px; padding: 8px 0; font-size: 11px; border-radius: 6px; width: 100%; cursor: pointer;") Lista de Espera
 
 //- ── SECCIÓN FAQ ACORDEÓN ──────────────────────────────────────────
-section#faq.w-full(style="border-top: 1px solid #162438; background: #03070b; padding: 60px 0; z-index: 10; position: relative;")
-  .max-w-4xl.mx-auto.px-8
-    .text-center(style="margin-bottom: 36px;")
-      h2.font-display(style="font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 6px;") Preguntas Frecuentes
+section#faq.w-full(style="border-top: 1px solid #162438; background: #03070b; padding: 50px 0; z-index: 10; position: relative;")
+  .max-w-4xl.mx-auto.px-4(class="sm:px-8")
+    .text-center(style="margin-bottom: 30px;")
+      h2.font-display(style="font-size: clamp(20px, 3.5vw, 24px); font-weight: 800; color: #fff; margin-bottom: 6px;") Preguntas Frecuentes
       p(style="font-size: 12px; color: #58718e;") Todo lo que necesitas saber antes de iniciar.
 
     .space-y-3
       .feature-card(style="border-radius: 10px; padding: 14px 18px; cursor: pointer;", onclick="toggleFaq(1)")
-        .flex.justify-between.items-center
+        .flex.justify-between.items-center(style="gap: 12px;")
           h4(style="font-size: 13px; font-weight: 600; color: #fff;") ¿Cómo reservo mi cupo de estacionamiento?
-          span#faqIcon1(style="color: #1db869; font-weight: 700;") +
+          span#faqIcon1(style="color: #1db869; font-weight: 700; font-size: 16px;") +
         p#faqAns1(style="display: none; font-size: 11px; color: #58718e; margin-top: 8px; line-height: 1.5;") Crea una cuenta, selecciona la zona que prefieras en el mapa en vivo, escoge la hora estimada y confirma con pago digital.
 
       .feature-card(style="border-radius: 10px; padding: 14px 18px; cursor: pointer;", onclick="toggleFaq(2)")
-        .flex.justify-between.items-center
+        .flex.justify-between.items-center(style="gap: 12px;")
           h4(style="font-size: 13px; font-weight: 600; color: #fff;") ¿Puedo cancelar o reprogramar una reserva?
-          span#faqIcon2(style="color: #1db869; font-weight: 700;") +
+          span#faqIcon2(style="color: #1db869; font-weight: 700; font-size: 16px;") +
         p#faqAns2(style="display: none; font-size: 11px; color: #58718e; margin-top: 8px; line-height: 1.5;") Sí, desde el módulo de reservas puedes gestionar cancelaciones y modificaciones sin cargos adicionales antes del inicio pactado.
 
       .feature-card(style="border-radius: 10px; padding: 14px 18px; cursor: pointer;", onclick="toggleFaq(3)")
-        .flex.justify-between.items-center
+        .flex.justify-between.items-center(style="gap: 12px;")
           h4(style="font-size: 13px; font-weight: 600; color: #fff;") ¿Qué medios de pago están disponibles?
-          span#faqIcon3(style="color: #1db869; font-weight: 700;") +
+          span#faqIcon3(style="color: #1db869; font-weight: 700; font-size: 16px;") +
         p#faqAns3(style="display: none; font-size: 11px; color: #58718e; margin-top: 8px; line-height: 1.5;") Pasarelas integradas con tarjetas de crédito, débito y transferencias electrónicas inmediatas[cite: 8].
 
 //- ── FOOTER ───────────────────────────────────────────────────────
-footer.w-full.text-center(style="border-top: 1px solid #162438; background: #020509; padding: 32px 0; z-index: 10; position: relative;")
+footer.w-full.text-center(style="border-top: 1px solid #162438; background: #020509; padding: 30px 16px; z-index: 10; position: relative;")
   p(style="font-size: 11px; color: #58718e; margin-bottom: 12px;") Una ciudad más organizada, empieza con un buen parqueo[cite: 8]
   .flex.items-center.justify-center
-    img(src="/img/parkalia.png", alt="PARKALIA", style="height: 32px; width: auto; opacity: 0.9; object-fit: contain;")
+    img(src="/img/parkalia.png", alt="PARKALIA", style="height: 28px; width: auto; opacity: 0.9; object-fit: contain;")
