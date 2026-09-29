@@ -62,9 +62,10 @@ const defaultUser = {
 // ==========================================
 
 // Página principal (Home) al entrar a la raíz del sitio
+// Página principal (Home) al entrar a la raíz del sitio
 app.get("/", (req, res) => {
-  res.render("pages/homeView", {
-    title: "PARKALIA - Sistema de Gestión de Parqueaderos",
+  res.render("pages/home/homeView", {
+    title: "PARKALIA - Sistema de Gestión de Parqueaderos"
   });
 });
 

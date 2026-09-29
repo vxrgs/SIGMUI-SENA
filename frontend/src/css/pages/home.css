@@ -1,0 +1,305 @@
+* {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #03070b !important;
+  font-family: 'Inter', sans-serif;
+  color: #f1f5f9;
+  overflow-x: hidden;
+}
+
+.font-display {
+  font-family: 'Syne', sans-serif;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* NAVBAR & HEADER */
+#mainHeader {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#mainHeader.scrolled {
+  height: 64px;
+  background: rgba(3, 7, 11, 0.96) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(22, 36, 56, 0.8);
+}
+
+/* LOGOS */
+.logo-brand {
+  cursor: pointer;
+  transition: transform 0.25s ease;
+  display: flex;
+  align-items: center;
+}
+
+.logo-brand:hover {
+  transform: scale(1.04);
+}
+
+.logo-img-main {
+  height: 42px;
+  width: auto;
+  max-width: 175px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 14px rgba(29, 184, 105, 0.3));
+  transition: filter 0.25s ease;
+}
+
+.logo-brand:hover .logo-img-main {
+  filter: drop-shadow(0 0 20px rgba(43, 126, 201, 0.5));
+}
+
+.logo-img-phone {
+  height: 20px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(29, 184, 105, 0.35));
+}
+
+/* LINKS NAVBAR */
+.nav-item {
+  position: relative;
+  color: #58718e;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 2px;
+  transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+  color: #f8fafc;
+}
+
+.nav-item.active {
+  color: #1db869 !important;
+  font-weight: 600;
+}
+
+.nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 100%;
+  height: 2px;
+  background: #1db869;
+  border-radius: 2px;
+  box-shadow: 0 0 10px #1db869;
+  transition: transform 0.25s ease;
+}
+
+.nav-item:hover::after,
+.nav-item.active::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+/* BOTONES */
+.hero-btn-primary {
+  background: linear-gradient(90deg, #2b7ec9 0%, #1db869 100%);
+  color: #ffffff !important;
+  font-weight: 700;
+  height: 40px;
+  padding: 0 22px;
+  border-radius: 8px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s ease;
+  text-decoration: none;
+  border: none;
+}
+
+.hero-btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: 0.5s;
+}
+
+.hero-btn-primary:hover::after {
+  left: 100%;
+}
+
+.hero-btn-primary:hover {
+  box-shadow: 0 0 24px rgba(29, 184, 105, 0.45);
+  transform: translateY(-2px);
+}
+
+.hero-btn-secondary {
+  border: 1px solid #162438;
+  background: #0d1723;
+  color: #cbd5e1;
+  height: 40px;
+  padding: 0 22px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.hero-btn-secondary:hover {
+  border-color: #1db869;
+  color: #fff;
+  background: rgba(29, 184, 105, 0.1);
+  transform: translateY(-2px);
+}
+
+.btn-gradient {
+  background: linear-gradient(90deg, #2b7ec9 0%, #1db869 100%);
+  color: #ffffff !important;
+  font-weight: 700;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-gradient:hover {
+  box-shadow: 0 0 22px rgba(29, 184, 105, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn-outline-cyber {
+  border: 1px solid #162438;
+  background: #0d1723;
+  color: #cbd5e1;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-cyber:hover {
+  border-color: #1db869;
+  color: #fff;
+  background: rgba(29, 184, 105, 0.1);
+  transform: translateY(-2px);
+}
+
+/* PERSPECTIVA & MOCKUP 3D TITANIO */
+.perspective-scene {
+  perspective: 1200px;
+}
+
+#interactivePhone {
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out;
+  background: linear-gradient(145deg, #263445, #111a26);
+  border: 8px solid #2a3a4e;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.18),
+    -25px 35px 70px rgba(0, 0, 0, 0.95),
+    0 0 35px rgba(43, 126, 201, 0.2);
+}
+
+.card-back-cyan {
+  transform: translateZ(-45px) rotateY(-14deg) rotateZ(8deg) translateX(35px) translateY(-10px);
+}
+
+.card-back-mint {
+  transform: translateZ(-20px) rotateY(-14deg) rotateZ(4deg) translateX(18px) translateY(-5px);
+}
+
+.hero-bg {
+  background: 
+    linear-gradient(to right, #03070b 0%, #03070b 40%, rgba(3, 7, 11, 0.85) 68%, rgba(3, 7, 11, 0.3) 100%),
+    linear-gradient(to bottom, transparent 70%, #03070b 100%),
+    url('https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&w=1600&q=80') center right/cover no-repeat;
+}
+
+.feature-card {
+  background: #0d1723;
+  border: 1px solid #162438;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.feature-card:hover {
+  border-color: #1db869;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px -10px rgba(29, 184, 105, 0.25);
+}
+
+/* PINES INTERACTIVOS */
+.pin-pulse {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.pin-pulse:hover {
+  transform: scale(1.3);
+}
+
+.pin-pulse::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: rgba(29, 184, 105, 0.4);
+  animation: pulseRing 1.8s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+}
+
+@keyframes pulseRing {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.cyber-grid {
+  background-image: linear-gradient(rgba(43, 126, 201, 0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(43, 126, 201, 0.03) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+/* MENÚ MÓVIL */
+#mobileMenu {
+  transition: transform 0.3s ease;
+  transform: translateX(100%);
+}
+
+#mobileMenu.open {
+  transform: translateX(0);
+}
+
+/* NOTIFICACIÓN TOAST */
+#toastBox {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #0d1723;
+  border: 1px solid #1db869;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(29, 184, 105, 0.3);
+  border-radius: 10px;
+  padding: 12px 18px;
+  display: none;
+  align-items: center;
+  gap: 12px;
+  z-index: 100;
+  transition: all 0.3s ease;
+}
+
+#toastBox.show {
+  display: flex;
+  animation: slideIn 0.3s ease forwards;
+}
+
+@keyframes slideIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
