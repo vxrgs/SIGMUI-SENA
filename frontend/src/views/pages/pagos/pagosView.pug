@@ -21,9 +21,9 @@ block content
               .text-xs.text-gray-400 2 horas (10:00 AM - 12:00 PM)
             .text-sm.text-gray-50 $#{zone.price * 2}
 
-          .bg-primary-500/10.border.border-primary-500/20.rounded-lg.px-5.py-4.flex.justify-between.items-center
-            span.font-heading.font-bold.text-[15px].text-gray-50 Total a pagar
-            span.font-heading.text-[26px].font-extrabold.text-secondary-400 $#{zone.price * 2}
+          .border.rounded-lg.px-5.py-4.flex.justify-between.items-center(class="bg-primary-500/10 border-primary-500/20")
+            span.font-heading.font-bold.text-gray-50(class="text-[15px]") Total a pagar
+            span.font-heading.font-extrabold.text-secondary-400(class="text-[26px]") $#{zone.price * 2}
 
       //- Paso 2: Método de pago
       .bg-gray-900.border.border-gray-800.rounded-xl.overflow-hidden.mb-6.transition-all.duration-300
@@ -49,19 +49,19 @@ block content
           #card-form.space-y-4
             div
               label.block.text-xs.font-medium.text-gray-400.mb-1 Número de tarjeta
-              input.w-full.bg-gray-950.border.border-gray-700.rounded-lg.px-4.py-2.5.text-sm.text-gray-50(class="focus:outline-none focus:border-primary-500" type="text" placeholder="0000 0000 0000 0000")
+              input.w-full.bg-gray-950.border.border-gray-700.rounded-lg.px-4.text-sm.text-gray-50(class="py-2.5 focus:outline-none focus:border-primary-500" type="text" placeholder="0000 0000 0000 0000")
             
             .grid.grid-cols-2.gap-4
               div
                 label.block.text-xs.font-medium.text-gray-400.mb-1 Vencimiento
-                input.w-full.bg-gray-950.border.border-gray-700.rounded-lg.px-4.py-2.5.text-sm.text-gray-50(class="focus:outline-none focus:border-primary-500" type="text" placeholder="MM/YY")
+                input.w-full.bg-gray-950.border.border-gray-700.rounded-lg.px-4.text-sm.text-gray-50(class="py-2.5 focus:outline-none focus:border-primary-500" type="text" placeholder="MM/YY")
               div
                 label.block.text-xs.font-medium.text-gray-400.mb-1 CVC
-                input.w-full.bg-gray-950.border.border-gray-700.rounded-lg.px-4.py-2.5.text-sm.text-gray-50(class="focus:outline-none focus:border-primary-500" type="text" placeholder="123")
+                input.w-full.bg-gray-950.border.border-gray-700.rounded-lg.px-4.text-sm.text-gray-50(class="py-2.5 focus:outline-none focus:border-primary-500" type="text" placeholder="123")
             
             div
               label.block.text-xs.font-medium.text-gray-400.mb-1 Nombre en la tarjeta
-              input.w-full.bg-gray-950.border.border-gray-700.rounded-lg.px-4.py-2.5.text-sm.text-gray-50(class="focus:outline-none focus:border-primary-500" type="text" placeholder="Ej. Juan Pérez")
+              input.w-full.bg-gray-950.border.border-gray-700.rounded-lg.px-4.text-sm.text-gray-50(class="py-2.5 focus:outline-none focus:border-primary-500" type="text" placeholder="Ej. Juan Pérez")
 
       //- Paso 3: Confirmación
       .bg-gray-900.border.border-gray-800.rounded-xl.overflow-hidden.mb-8
@@ -74,12 +74,12 @@ block content
             | Pagar $#{zone.price * 2}
 
   //- Modal de Éxito
-  #success-modal.fixed.inset-0.bg-black/80.hidden.items-center.justify-center.z-50.opacity-0.transition-opacity.duration-300
+  #success-modal.fixed.inset-0.hidden.items-center.justify-center.z-50.opacity-0.transition-opacity.duration-300(class="bg-black/80")
     .bg-gray-900.border.border-gray-800.rounded-2xl.p-8.max-w-sm.w-full.text-center.transform.scale-95.transition-transform.duration-300
-      .w-16.h-16.bg-secondary-500/20.rounded-full.flex.items-center.justify-center.mx-auto.mb-4
+      .w-16.h-16.rounded-full.flex.items-center.justify-center.mx-auto.mb-4(class="bg-secondary-500/20")
         span.text-3xl ✅
       h3.font-heading.text-xl.font-bold.text-gray-50.mb-2 ¡Pago Exitoso!
       p.text-sm.text-gray-400.mb-6 Tu reserva en #{zone.name} ha sido confirmada.
-      a.block.w-full.bg-gray-800.text-white.font-medium.py-2.5.rounded-lg.transition-colors.no-underline(class="hover:bg-gray-700" href="/reservaciones") Ver mis reservas
+      a.block.w-full.bg-gray-800.text-white.font-medium.rounded-lg.transition-colors.no-underline(class="py-2.5 hover:bg-gray-700" href="/reservas/historial") Ver mis reservas
 
   script(src="/js/pages/pagos.js")
