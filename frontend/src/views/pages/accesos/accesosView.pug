@@ -1,0 +1,131 @@
+extends ../../layouts/main.pug
+
+block content
+  .min-h-screen.bg-gray-50.p-6
+    //- Encabezado
+    .max-w-7xl.mx-auto.mb-6
+      .flex.flex-col.md:flex-row.md:items-center.md:justify-between.gap-4
+        div
+          h1.text-2xl.font-bold.text-gray-800 Control de Acceso y Registro de Vehículos
+          p.text-sm.text-gray-600 Registrar entrada y salida de vehículos en tiempo real
+
+        .flex.items-center.gap-3
+          span.inline-flex.items-center.px-3.py-1.rounded-full.text-xs.font-medium.bg-green-100.text-green-800
+            span.w-2.h-2.mr-1.5.bg-green-500.rounded-full
+            | Sistema Operativo
+
+    .max-w-7xl.mx-auto.grid.grid-cols-1.lg:grid-cols-3.gap-6
+
+      //- Formulario de Registro (Panel Izquierdo)
+      .lg:col-span-1.bg-white.rounded-xl.shadow-sm.border.border-gray-200.p-6
+        h2.text-lg.font-semibold.text-gray-800.mb-4.border-b.pb-2 Registrar Movimiento
+
+        form#registroAccesoForm(action="/api/accesos" method="POST" class="space-y-4")
+          //- Tipo de Movimiento
+          div
+            label.block.text-sm.font-medium.text-gray-700.mb-1 Tipo de Movimiento
+            .grid.grid-cols-2.gap-3
+              label.flex.items-center.justify-center.p-3.border.rounded-lg.cursor-pointer.hover:bg-gray-50.has-[\:checked]:border-emerald-500.has-[\:checked]:bg-emerald-50
+                input(type="radio" name="tipoMovimiento" value="ENTRADA" checked class="sr-only")
+                span.text-sm.font-medium.text-emerald-700 Entrada
+              label.flex.items-center.justify-center.p-3.border.rounded-lg.cursor-pointer.hover:bg-gray-50.has-[\:checked]:border-amber-500.has-[\:checked]:bg-amber-50
+                input(type="radio" name="tipoMovimiento" value="SALIDA" class="sr-only")
+                span.text-sm.font-medium.text-amber-700 Salida
+
+          //- Campo Placa
+          div
+            label(for="placa").block.text-sm.font-medium.text-gray-700.mb-1 Placa del Vehículo
+            input#placa(
+              type="text" 
+              name="placa" 
+              placeholder="Ej: ABC-123" 
+              required 
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-lg uppercase font-mono tracking-wider"
+            )
+
+          //- Selección de Zona
+          div
+            label(for="zonaId").block.text-sm.font-medium.text-gray-700.mb-1 Zona Asignada
+            select#zonaId(name="zonaId" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm")
+              option(value="" disabled selected) Seleccionar Zona...
+              option(value="1") Zona A - Motos
+              option(value="2") Zona B - Autos
+              option(value="3") Zona C - Bicicletas
+
+          //- Documento
+          div
+            label(for="documentoConductor").block.text-sm.font-medium.text-gray-700.mb-1 Documento del Aprendiz / Instructor
+            input#documentoConductor(
+              type="text" 
+              name="documentoConductor" 
+              placeholder="Número de documento" 
+              required 
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm"
+            )
+
+          //- Observaciones
+          div
+            label(for="observaciones").block.text-sm.font-medium.text-gray-700.mb-1 Observaciones / Cascos
+            textarea#observaciones(
+              name="observaciones" 
+              rows="2" 
+              placeholder="Ej: Ingresa con 2 cascos" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 text-sm"
+            )
+
+          //- Botón
+          button(
+            type="submit" 
+            class="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg shadow-sm transition-colors duration-150 flex items-center justify-center gap-2"
+          )
+            svg.w-5.h-5(fill="none" stroke="currentColor" viewBox="0 0 24 24")
+              path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z")
+            | Confirmar Registro
+
+      //- Panel Derecho (Métricas y Tabla)
+      .lg:col-span-2.space-y-6
+        .grid.grid-cols-3.gap-4
+          .bg-white.p-4.rounded-xl.border.border-gray-200.shadow-sm
+            p.text-xs.font-medium.text-gray-500 Vehículos Dentro
+            p.text-2xl.font-bold.text-emerald-600 48
+          .bg-white.p-4.rounded-xl.border.border-gray-200.shadow-sm
+            p.text-xs.font-medium.text-gray-500 Entradas Hoy
+            p.text-2xl.font-bold.text-blue-600 112
+          .bg-white.p-4.rounded-xl.border.border-gray-200.shadow-sm
+            p.text-xs.font-medium.text-gray-500 Salidas Hoy
+            p.text-2xl.font-bold.text-amber-600 64
+
+        .bg-white.rounded-xl.shadow-sm.border.border-gray-200.overflow-hidden
+          .p-4.border-b.border-gray-200.flex.justify-between.items-center
+            h3.text-base.font-semibold.text-gray-800 Últimos Movimientos
+            button.text-sm.text-emerald-600.hover:underline Actualizar
+
+          .overflow-x-auto
+            table.w-full.text-left.border-collapse
+              thead.bg-gray-50.border-b.border-gray-200
+                tr
+                  th.px-4.py-3.text-xs.font-semibold.text-gray-600.uppercase Placa
+                  th.px-4.py-3.text-xs.font-semibold.text-gray-600.uppercase Usuario
+                  th.px-4.py-3.text-xs.font-semibold.text-gray-600.uppercase Movimiento
+                  th.px-4.py-3.text-xs.font-semibold.text-gray-600.uppercase Hora
+                  th.px-4.py-3.text-xs.font-semibold.text-gray-600.uppercase Acciones
+              tbody.divide-y.divide-gray-200
+                tr.hover:bg-gray-50
+                  td.px-4.py-3.font-mono.font-bold.text-gray-800 KLS-456
+                  td.px-4.py-3.text-sm.text-gray-600 Carlos Pérez (Aprendiz)
+                  td.px-4.py-3
+                    span.px-2.5.py-0.5.rounded-full.text-xs.font-medium.bg-emerald-100.text-emerald-800 Entrada
+                  td.px-4.py-3.text-sm.text-gray-500 08:14 AM
+                  td.px-4.py-3
+                    button.text-xs.text-amber-600.hover:text-amber-800.font-medium Registrar Salida
+                tr.hover:bg-gray-50
+                  td.px-4.py-3.font-mono.font-bold.text-gray-800 MNO-901
+                  td.px-4.py-3.text-sm.text-gray-600 Ana Gómez (Instructor)
+                  td.px-4.py-3
+                    span.px-2.5.py-0.5.rounded-full.text-xs.font-medium.bg-amber-100.text-amber-800 Salida
+                  td.px-4.py-3.text-sm.text-gray-500 08:02 AM
+                  td.px-4.py-3
+                    span.text-xs.text-gray-400 Completado
+
+block scripts
+  script(src="/js/pages/accesos.js")
