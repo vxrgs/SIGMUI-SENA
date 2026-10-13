@@ -3,15 +3,12 @@
 //- Expects a `currentRoute` local (string) to highlight the active link
 
 aside.w-64.bg-gray-950.border-r.border-gray-800.flex.flex-col.h-full.hidden(class="md:flex")
-  .flex.items-center.gap-3.px-4.py-5.border-b.border-gray-800
-    a.no-underline.flex.items-center(href="/")
-      img.h-8.w-auto.object-contain(src="/img/parkalia.png" alt="Logo Parkalia")
 
   ul.flex-1.py-4.px-3.flex.flex-col.gap-1.m-0.list-none.overflow-y-auto
     li
       a.flex.items-center.gap-3.px-3.py-2.rounded-lg.text-sm.transition-colors.no-underline(
-        href="/vehiculos"
-        class=currentRoute === "vehiculos" ? "bg-primary-500/10 text-primary-400 font-medium" : "text-gray-400 hover:bg-gray-900 hover:text-gray-50 font-normal"
+        href="/vehicles"
+        class=currentRoute === "vehicles" ? "bg-primary-500/10 text-primary-400 font-medium" : "text-gray-400 hover:bg-gray-900 hover:text-gray-50 font-normal"
       )
         span.text-lg 🚗
         span Vehículos
@@ -29,8 +26,8 @@ aside.w-64.bg-gray-950.border-r.border-gray-800.flex.flex-col.h-full.hidden(clas
 
     li
       a.flex.items-center.gap-3.px-3.py-2.rounded-lg.text-sm.transition-colors.no-underline(
-        href="/reservaciones"
-        class=currentRoute === "reservaciones" ? "bg-primary-500/10 text-primary-400 font-medium" : "text-gray-400 hover:bg-gray-900 hover:text-gray-50 font-normal"
+        href="/reservas/cancelar"
+        class=currentRoute === "reservas" ? "bg-primary-500/10 text-primary-400 font-medium" : "text-gray-400 hover:bg-gray-900 hover:text-gray-50 font-normal"
       )
         span.text-lg 📋
         span Reservaciones
@@ -45,7 +42,7 @@ aside.w-64.bg-gray-950.border-r.border-gray-800.flex.flex-col.h-full.hidden(clas
 
     li
       a.flex.items-center.gap-3.px-3.py-2.rounded-lg.text-sm.transition-colors.no-underline(
-        href="/historial"
+        href="/reservas/historial"
         class=currentRoute === "historial" ? "bg-primary-500/10 text-primary-400 font-medium" : "text-gray-400 hover:bg-gray-900 hover:text-gray-50 font-normal"
       )
         span.text-lg 🕐
@@ -56,7 +53,7 @@ aside.w-64.bg-gray-950.border-r.border-gray-800.flex.flex-col.h-full.hidden(clas
 
     li
       a.flex.items-center.gap-3.px-3.py-2.rounded-lg.text-sm.transition-colors.no-underline(
-        href="/usuarios"
+        href="/admin/usuarios"
         class=currentRoute === "usuarios" ? "bg-primary-500/10 text-primary-400 font-medium" : "text-gray-400 hover:bg-gray-900 hover:text-gray-50 font-normal"
       )
         span.text-lg 👥
