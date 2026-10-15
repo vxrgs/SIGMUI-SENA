@@ -1052,9 +1052,6 @@
   .py-4 {
     padding-block: var(--spacing-4);
   }
-  .py-5 {
-    padding-block: var(--spacing-5);
-  }
   .py-8 {
     padding-block: var(--spacing-8);
   }
@@ -1195,6 +1192,9 @@
   }
   .text-\[\#1A6FD4\] {
     color: #1A6FD4;
+  }
+  .text-\[\#3DBE6C\] {
+    color: #3DBE6C;
   }
   .text-\[\#5A6A7E\] {
     color: #5A6A7E;

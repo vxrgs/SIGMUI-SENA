@@ -18,7 +18,7 @@ const screenForm = document.getElementById("screen-form");
 const screenSuccess = document.getElementById("screen-success");
 const btnRegister = document.getElementById("btn-register");
 const passwordInput = document.getElementById("password");
-const confirmInput = document.getElementById("confirm-password");
+const confirmInput = document.getElementById("confirmPassword");
 
 // Clases de borde para inputs (antes eran .input-error / .input-success)
 const BORDER_DEFAULT = "border-gray-700";
@@ -77,7 +77,7 @@ if (passwordInput) {
 }
 
 // ── Limpiar error al escribir (igual que hu01) ──
-["firstname", "lastname", "email", "password", "confirm-password"].forEach((id) => {
+["firstname", "lastname", "email", "password", "confirmPassword"].forEach((id) => {
   const input = document.getElementById(id);
   if (input) {
     input.addEventListener("input", function () {
@@ -90,8 +90,11 @@ if (passwordInput) {
 });
 
 // ── Validación al enviar (misma lógica que hu01-script.js) ──
-if (btnRegister) {
-  btnRegister.addEventListener("click", function () {
+const registerForm = document.getElementById("registerForm");
+if (registerForm) {
+  registerForm.addEventListener("submit", async function (e) {
+    e.preventDefault(); // Evitar que el formulario se envíe de forma nativa
+
     let valid = true;
 
     const firstname = document.getElementById("firstname").value.trim();
@@ -150,22 +153,36 @@ if (btnRegister) {
     }
 
     if (!confirm) {
-      setError("confirm-password", "confirm-password-error", "Por favor confirma tu contraseña.");
+      setError("confirmPassword", "confirmPassword-error", "Por favor confirma tu contraseña.");
       valid = false;
     } else if (password !== confirm) {
-      setError("confirm-password", "confirm-password-error", "Las contraseñas no coinciden.");
+      setError("confirmPassword", "confirmPassword-error", "Las contraseñas no coinciden.");
       valid = false;
     } else {
-      setSuccess("confirm-password", "confirm-password-error");
+      setSuccess("confirmPassword", "confirmPassword-error");
     }
 
     if (valid) {
-      // TODO (opcional, fuera del alcance de HU01): aquí podrías hacer
-      // fetch('/auth/register', { method: 'POST', body: ... }) para
-      // crear el usuario real en la BD usando el modelo User existente.
-      document.getElementById("success-email-display").textContent = email;
-      screenForm.classList.add("hidden");
-      screenSuccess.classList.remove("hidden");
+      try {
+        const response = await fetch("/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ firstname, lastname, email, password }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          document.getElementById("success-email-display").textContent = email;
+          screenForm.classList.add("hidden");
+          screenSuccess.classList.remove("hidden");
+        } else {
+          // Mostrar el error del servidor (ej: "El correo ya existe.")
+          setError("email", "email-error", data.message || "Error al registrar.");
+        }
+      } catch (err) {
+        setError("email", "email-error", "Error de conexión con el servidor.");
+      }
     }
   });
 }
