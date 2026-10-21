@@ -1,40 +1,57 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const usuarioActual = {
-    nombre: "AdminUser",
-    rol: "Administrador"
-  };
-
-  let usuarios = [
-    {
-      nombre: "JosephGomez8",
-      correo: "joseph@correo.com",
-      rol: "Ciudadano",
-      fecha: "10 Ene 2026",
-      reservas: 12,
-      estado: "activo"
-    },
-    {
-      nombre: "t_vxrgas",
-      correo: "tvxrgas@correo.com",
-      rol: "Administrador",
-      fecha: "5 Ene 2026",
-      reservas: 3,
-      estado: "activo"
-    },
-    {
-      nombre: "usuario3",
-      correo: "usuario3@correo.com",
-      rol: "Ciudadano",
-      fecha: "15 Feb 2026",
-      reservas: 7,
-      estado: "inactivo"
-    }
-  ];
+  // La autorización la hace el servidor (requireAdmin): esta pantalla ni se renderiza
+  // ni responde a la API si el usuario no es administrador.
+  let usuarios = [];
 
   let filtroActual = "todos";
   let textoBusqueda = "";
   let usuarioSeleccionado = null;
   let accionToggle = null;
+  let mensajeTimer = null;
+
+  // Escapa texto antes de insertarlo con innerHTML (nombres y correos los escribe el usuario)
+  function esc(texto) {
+    const div = document.createElement("div");
+    div.textContent = texto ?? "";
+    return div.innerHTML;
+  }
+
+  function formatearFecha(iso) {
+    return new Date(iso).toLocaleDateString("es-CO", { day: "numeric", month: "short", year: "numeric" });
+  }
+
+  function mostrarMensaje(texto, ok = true) {
+    const el = document.getElementById("usuariosMensaje");
+    if (!el) return;
+    el.className = "mb-4 px-4 py-3 rounded-xl border text-sm " + (ok
+      ? "bg-emerald-500/10 border-emerald-500/40 text-emerald-400"
+      : "bg-error/10 border-error/40 text-error");
+    el.textContent = (ok ? "✅ " : "⚠️ ") + texto;
+
+    clearTimeout(mensajeTimer);
+    mensajeTimer = setTimeout(() => el.classList.add("hidden"), 5000);
+  }
+
+  async function api(url, method = "GET", body) {
+    const res = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.success) throw new Error(data.message || "No se pudo completar la acción.");
+    return data;
+  }
+
+  async function cargarUsuarios() {
+    try {
+      usuarios = (await api("/api/admin/users")).users;
+    } catch (error) {
+      usuarios = [];
+      mostrarMensaje(error.message, false);
+    }
+    renderTabla();
+  }
 
   function actualizarCards() {
     const total = usuarios.length;
@@ -82,7 +99,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     lista.forEach((u) => {
-      const index = usuarios.indexOf(u);
       const row = document.createElement("div");
       row.className = "grid grid-cols-1 md:grid-cols-6 px-5 py-4 items-center gap-2 md:gap-0 transition-colors hover:bg-gray-800/50 text-sm";
 
@@ -94,17 +110,21 @@ document.addEventListener("DOMContentLoaded", () => {
         ? "bg-warning/15 border-warning/40 text-warning"
         : "text-gray-400";
 
+      // No puedes desactivarte ni eliminarte a ti mismo (el servidor también lo bloquea)
+      const bloqueo = u.esActual ? "opacity-40 cursor-not-allowed" : "";
+      const bloqueoAttr = u.esActual ? 'disabled title="No puedes hacerlo con tu propia cuenta"' : "";
+
       row.innerHTML = `
         <div>
-          <b class="text-gray-200 block">${u.nombre}</b>
-          <small class="text-gray-400 text-xs">${u.correo}</small>
+          <b class="text-gray-200 block">${esc(u.nombre)}${u.esActual ? ' <span class="text-xs text-primary-400 font-normal">(tú)</span>' : ""}</b>
+          <small class="text-gray-400 text-xs">${esc(u.correo)}</small>
         </div>
         <div>
           <span class="inline-block px-2.5 py-0.5 rounded-full border text-xs font-medium ${rolStyles}">
-            ${u.rol}
+            ${esc(u.rol)}
           </span>
         </div>
-        <div class="text-gray-400 text-xs">${u.fecha}</div>
+        <div class="text-gray-400 text-xs">${formatearFecha(u.fecha)}</div>
         <div class="text-gray-400">${u.reservas}</div>
         <div>
           <span class="inline-block px-2.5 py-0.5 rounded-full border text-xs font-semibold uppercase tracking-wider ${estadoStyles}">
@@ -112,9 +132,9 @@ document.addEventListener("DOMContentLoaded", () => {
           </span>
         </div>
         <div class="flex items-center gap-2">
-          <button class="btn-editar px-2.5 py-1 rounded-lg border border-primary-500/40 bg-primary-500/15 text-primary-400 text-xs font-medium transition-colors hover:bg-primary-500 hover:text-white" data-index="${index}" type="button">✏️</button>
-          <button class="btn-toggle px-2.5 py-1 rounded-lg border border-warning/40 bg-warning/15 text-warning text-xs font-medium transition-colors hover:bg-warning hover:text-black" data-index="${index}" type="button">⏸️</button>
-          <button class="btn-delete px-2.5 py-1 rounded-lg border border-error/40 bg-error/15 text-error text-xs font-medium transition-colors hover:bg-error hover:text-white" data-index="${index}" type="button">🗑️</button>
+          <button class="btn-editar px-2.5 py-1 rounded-lg border border-primary-500/40 bg-primary-500/15 text-primary-400 text-xs font-medium transition-colors hover:bg-primary-500 hover:text-white" data-id="${u.id}" type="button">✏️</button>
+          <button class="btn-toggle px-2.5 py-1 rounded-lg border border-warning/40 bg-warning/15 text-warning text-xs font-medium transition-colors hover:bg-warning hover:text-black ${bloqueo}" data-id="${u.id}" type="button" ${bloqueoAttr}>⏸️</button>
+          <button class="btn-delete px-2.5 py-1 rounded-lg border border-error/40 bg-error/15 text-error text-xs font-medium transition-colors hover:bg-error hover:text-white ${bloqueo}" data-id="${u.id}" type="button" ${bloqueoAttr}>🗑️</button>
         </div>
       `;
 
@@ -136,37 +156,59 @@ document.addEventListener("DOMContentLoaded", () => {
     renderTabla();
   }
 
+  function ocultarTabla() {
+    document.querySelector(".tabla-card")?.classList.add("hidden");
+    document.querySelector(".cards")?.classList.add("hidden");
+    document.querySelector(".filtros")?.classList.add("hidden");
+  }
+
+  // Ejecuta una acción contra la API, recarga la lista y vuelve a la tabla
+  async function ejecutar(accion) {
+    try {
+      const data = await accion();
+      await cargarUsuarios();
+      volverTabla();
+      mostrarMensaje(data.message);
+    } catch (error) {
+      volverTabla();
+      mostrarMensaje(error.message, false);
+    }
+  }
+
+  const buscarUsuario = (id) => usuarios.find(u => String(u.id) === String(id));
+
   // Delegación de Eventos
   document.addEventListener("click", (e) => {
     const target = e.target.closest("button");
-    if (!target) return;
+    if (!target || target.disabled) return;
 
-    const index = target.dataset.index;
+    const id = target.dataset.id;
 
     // Editar
     if (target.classList.contains("btn-editar")) {
-      usuarioSeleccionado = index;
-      const user = usuarios[index];
+      usuarioSeleccionado = id;
+      const user = buscarUsuario(id);
 
       document.getElementById("editNombre").value = user.nombre;
       document.getElementById("editCorreo").value = user.correo;
       document.getElementById("editRol").value = user.rol;
       document.getElementById("editEstado").value = user.estado;
 
-      document.querySelector(".tabla-card")?.classList.add("hidden");
-      document.querySelector(".cards")?.classList.add("hidden");
-      document.querySelector(".filtros")?.classList.add("hidden");
+      // Sobre tu propia cuenta no se puede cambiar rol ni estado
+      document.getElementById("editRol").disabled = user.esActual;
+      document.getElementById("editEstado").disabled = user.esActual;
+
+      ocultarTabla();
       document.getElementById("vista-editar")?.classList.remove("hidden");
     }
 
     if (target.id === "guardarEditar") {
-      const user = usuarios[usuarioSeleccionado];
-      user.nombre = document.getElementById("editNombre").value;
-      user.correo = document.getElementById("editCorreo").value;
-      user.rol = document.getElementById("editRol").value;
-      user.estado = document.getElementById("editEstado").value;
-
-      volverTabla();
+      ejecutar(() => api(`/api/admin/users/${usuarioSeleccionado}`, "PUT", {
+        nombre: document.getElementById("editNombre").value,
+        correo: document.getElementById("editCorreo").value,
+        rol: document.getElementById("editRol").value,
+        estado: document.getElementById("editEstado").value,
+      }));
     }
 
     if (target.id === "cancelarEditar" || target.id === "cerrarEditar") {
@@ -175,8 +217,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Toggle Estado
     if (target.classList.contains("btn-toggle")) {
-      usuarioSeleccionado = index;
-      const user = usuarios[index];
+      usuarioSeleccionado = id;
+      const user = buscarUsuario(id);
 
       accionToggle = user.estado === "activo" ? "desactivar" : "activar";
 
@@ -188,24 +230,26 @@ document.addEventListener("DOMContentLoaded", () => {
       const mensajeToggle = document.getElementById("mensajeToggle");
       if (mensajeToggle) {
         mensajeToggle.innerHTML = `
-          ¿Seguro que deseas ${accionToggle} a <strong class="text-white">${user.nombre}</strong>?
+          ¿Seguro que deseas ${accionToggle} a <strong class="text-white">${esc(user.nombre)}</strong>?
           <br><br>
           <span class="inline-block px-2.5 py-0.5 rounded-full border text-xs font-medium ${user.rol === "Administrador" ? "bg-warning/15 border-warning/40 text-warning" : "text-gray-400"}">
-            ${user.rol}
+            ${esc(user.rol)}
           </span>
         `;
       }
 
-      document.querySelector(".tabla-card")?.classList.add("hidden");
-      document.querySelector(".cards")?.classList.add("hidden");
-      document.querySelector(".filtros")?.classList.add("hidden");
+      ocultarTabla();
       document.getElementById("vista-toggle")?.classList.remove("hidden");
     }
 
     if (target.id === "confirmarToggle") {
-      const user = usuarios[usuarioSeleccionado];
-      user.estado = user.estado === "activo" ? "inactivo" : "activo";
-      volverTabla();
+      const user = buscarUsuario(usuarioSeleccionado);
+      ejecutar(() => api(`/api/admin/users/${user.id}`, "PUT", {
+        nombre: user.nombre,
+        correo: user.correo,
+        rol: user.rol,
+        estado: user.estado === "activo" ? "inactivo" : "activo",
+      }));
     }
 
     if (target.id === "cancelarToggle" || target.id === "cerrarToggle") {
@@ -214,31 +258,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Eliminar
     if (target.classList.contains("btn-delete")) {
-      usuarioSeleccionado = index;
-      const user = usuarios[index];
+      usuarioSeleccionado = id;
+      const user = buscarUsuario(id);
 
       const preview = document.getElementById("deleteUserPreview");
       if (preview) {
         preview.innerHTML = `
           <div>
-            <b class="text-gray-200 block">${user.nombre}</b>
-            <small class="text-gray-400 text-xs">${user.correo}</small>
+            <b class="text-gray-200 block">${esc(user.nombre)}</b>
+            <small class="text-gray-400 text-xs">${esc(user.correo)}</small>
           </div>
           <span class="inline-block px-2.5 py-0.5 rounded-full border text-xs font-medium ${user.rol === "Administrador" ? "bg-warning/15 border-warning/40 text-warning" : "text-gray-400"}">
-            ${user.rol}
+            ${esc(user.rol)}
           </span>
         `;
       }
 
-      document.querySelector(".tabla-card")?.classList.add("hidden");
-      document.querySelector(".cards")?.classList.add("hidden");
-      document.querySelector(".filtros")?.classList.add("hidden");
+      ocultarTabla();
       document.getElementById("vista-eliminar")?.classList.remove("hidden");
     }
 
     if (target.id === "confirmarEliminar") {
-      usuarios.splice(usuarioSeleccionado, 1);
-      volverTabla();
+      ejecutar(() => api(`/api/admin/users/${usuarioSeleccionado}`, "DELETE"));
     }
 
     if (target.id === "cancelarEliminar" || target.id === "cerrarEliminar") {
@@ -272,19 +313,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Validar rol de acceso
-  if (usuarioActual.rol !== "Administrador") {
-    document.body.innerHTML = `
-      <div class="flex items-center justify-center h-screen bg-gray-950 text-white font-sans text-center">
-        <div>
-          <h1 class="text-2xl font-bold text-error mb-2">Acceso restringido</h1>
-          <p class="text-sm text-gray-400">No tienes permisos para acceder a esta sección.</p>
-        </div>
-      </div>
-    `;
-    return;
-  }
-
   // Inicialización
-  renderTabla();
+  cargarUsuarios();
 });

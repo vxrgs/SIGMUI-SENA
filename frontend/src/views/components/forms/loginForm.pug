@@ -23,8 +23,8 @@ form#loginForm(action="/auth/login" method="POST" style="display: flex; flex-dir
     )
     #password-error.error
 
-  #error-box.alert.alert-danger.hidden(style="font-size: 12px; padding: 12px; border-radius: 8px; text-align: center; background-color: rgba(232, 64, 74, 0.1); border: 1px solid #E8404A; color: #ff7b72;")
-    | Las credenciales no coinciden con ninguna cuenta registrada.
+  #error-box.alert.alert-danger(class=errorMessage ? "" : "hidden" role="alert" style="font-size: 12px; padding: 12px; border-radius: 8px; text-align: center; background-color: rgba(232, 64, 74, 0.1); border: 1px solid #E8404A; color: #ff7b72;")
+    = errorMessage || "Las credenciales no coinciden con ninguna cuenta registrada."
 
   div(style="height: 1px; background-color: #1E2A3A; margin: 6px 0;")
 

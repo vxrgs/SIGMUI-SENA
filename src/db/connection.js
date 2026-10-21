@@ -1,11 +1,20 @@
 import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
 
-let sequelize = null;
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-if (process.env.DB_HOST && process.env.DB_NAME) {
+// MySQL cuando el .env tiene DB_HOST y DB_NAME; si no, SQLite en un archivo local.
+// Así el proyecto siempre tiene base de datos real (y persistente), incluso sin configurar MySQL.
+export const usingMysql = Boolean(process.env.DB_HOST && process.env.DB_NAME);
+
+let sequelize;
+
+if (usingMysql) {
   sequelize = new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USER,
@@ -18,7 +27,17 @@ if (process.env.DB_HOST && process.env.DB_NAME) {
     }
   );
 } else {
-  console.log('No DB configuration found in .env, skipping Sequelize init');
+  const storage = process.env.DB_STORAGE
+    ? path.resolve(process.env.DB_STORAGE)
+    : path.resolve(__dirname, '../../data/sigmui.sqlite');
+
+  fs.mkdirSync(path.dirname(storage), { recursive: true });
+
+  sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage,
+    logging: false,
+  });
 }
 
 export default sequelize;

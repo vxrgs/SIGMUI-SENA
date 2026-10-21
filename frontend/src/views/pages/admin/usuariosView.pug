@@ -7,6 +7,9 @@ block content
       h1.font-heading.text-3xl.font-extrabold.text-gray-50.mb-1 Gestión de Usuarios
       p.text-sm.text-gray-400 Administra permisos, roles y estados de los usuarios del sistema
 
+    //- Mensaje de resultado (éxito / error)
+    #usuariosMensaje.hidden(role="status" aria-live="polite")
+
     //- Tarjetas de Resumen
     .cards.grid.grid-cols-1.gap-4.mb-6(class="sm:grid-cols-2 lg:grid-cols-4")
       .bg-gray-900.border.border-gray-800.rounded-xl.p-5.flex.items-center.gap-4.transition-all.duration-200(class="hover:border-primary-500 hover:-translate-y-0.5")

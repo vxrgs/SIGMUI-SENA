@@ -1,31 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const reservas = [
-    {
-      id: "PRK-001",
-      estado: "confirmada",
-      zona: "Zona Norte A",
-      fecha: "18 Mar 2026 - 2:00 AM",
-      tiempo: "2 horas",
-      precio: "$2000"
-    },
-    {
-      id: "PRK-002",
-      estado: "pendiente",
-      zona: "Zona Sur B",
-      fecha: "19 Mar 2026 - 4:00 PM",
-      tiempo: "3 horas",
-      precio: "$3000"
-    },
-    {
-      id: "PRK-003",
-      estado: "usada",
-      zona: "Zona Central",
-      fecha: "10 Mar 2025 - 2:00 AM",
-      tiempo: "1 hora",
-      precio: "$1500"
-    }
-  ];
-
+  let reservas = [];
   let reservaSeleccionada = null;
 
   // Elementos principales
@@ -41,11 +15,55 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnVerReservas = document.querySelector(".btn-ver-reservas");
   const btnInicio = document.querySelector(".btn-inicio");
 
+  function formatearFecha(iso) {
+    const d = new Date(iso);
+    const fecha = d.toLocaleDateString("es-CO", { day: "numeric", month: "short", year: "numeric" });
+    const hora = d.toLocaleTimeString("es-CO", { hour: "numeric", minute: "2-digit" });
+    return `${fecha} - ${hora}`;
+  }
+
+  // Convierte la respuesta de la API al formato que usa esta pantalla
+  function mapear(r) {
+    return {
+      id: r.id,
+      codigo: r.code,
+      estado: r.status === "pagada" ? "confirmada" : r.status,
+      zona: r.zone,
+      fecha: formatearFecha(r.startsAt),
+      tiempo: `${r.hours} ${r.hours === 1 ? "hora" : "horas"}`,
+      precio: `$${r.amount.toLocaleString("es-CO")}`,
+      canCancel: r.canCancel
+    };
+  }
+
+  async function cargarReservas() {
+    try {
+      const res = await fetch("/api/reservations");
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message);
+      reservas = data.reservations.map(mapear);
+    } catch (error) {
+      mostrarAlerta("No se pudieron cargar tus reservas");
+      reservas = [];
+    }
+    renderReservas();
+  }
+
   function renderReservas() {
     if (!reservasContainer) return;
     reservasContainer.innerHTML = "";
 
-    reservas.filter(r => r.estado !== "cancelado").forEach(r => {
+    const cancelables = reservas.filter(r => r.canCancel);
+
+    if (cancelables.length === 0) {
+      reservasContainer.innerHTML = `
+        <div class="p-6 text-center text-sm text-gray-400 border border-dashed border-gray-800 rounded-lg">
+          No tienes reservas activas para cancelar
+        </div>`;
+      return;
+    }
+
+    cancelables.forEach(r => {
       const div = document.createElement("div");
       div.className = "bg-gray-950 border border-gray-800 rounded-lg p-4 transition-all hover:border-error hover:scale-[1.01]";
 
@@ -60,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       div.innerHTML = `
         <div class="flex justify-between items-center mb-2">
-          <span class="font-bold text-primary-400">${r.id}</span>
+          <span class="font-bold text-primary-400">${r.codigo}</span>
           <span class="${estadoClasses}">${r.estado}</span>
         </div>
         <p class="text-sm font-semibold text-gray-200">${r.zona}</p>
@@ -77,10 +95,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll(".btn-cancelar").forEach(btn => {
       btn.addEventListener("click", () => {
-        reservaSeleccionada = reservas.find(r => r.id === btn.dataset.id);
+        reservaSeleccionada = reservas.find(r => String(r.id) === btn.dataset.id);
         mostrar("confirmacion");
 
-        if (detalleReserva) detalleReserva.innerText = `${reservaSeleccionada.id} - ${reservaSeleccionada.zona}`;
+        if (detalleReserva) detalleReserva.innerText = `${reservaSeleccionada.codigo} - ${reservaSeleccionada.zona}`;
         if (alertaTexto) alertaTexto.innerText = "¿Estás seguro que deseas cancelar esta reserva? El cupo será liberado automáticamente.";
       });
     });
@@ -97,45 +115,48 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function cancelarReserva() {
+  // La validación real (usada, expirada, ya cancelada) la hace el servidor
+  async function cancelarReserva() {
     if (!reservaSeleccionada) {
       mostrarAlerta("No hay ninguna reserva seleccionada");
       return;
     }
 
-    if (reservaSeleccionada.estado === "usada") {
-      mostrarAlerta("No puedes cancelar una reserva ya utilizada");
-      return;
-    }
+    btnConfirmar.disabled = true;
+    try {
+      const res = await fetch(`/api/reservations/${reservaSeleccionada.id}/cancel`, { method: "POST" });
+      const data = await res.json().catch(() => ({}));
 
-    if (estaExpirada(reservaSeleccionada.fecha)) {
-      mostrarAlerta("No puedes cancelar una reserva expirada");
-      return;
-    }
+      if (!res.ok || !data.success) {
+        mostrarAlerta(data.message || "No se pudo cancelar la reserva");
+        mostrar("lista");
+        await cargarReservas();
+        return;
+      }
 
-    if (reservaSeleccionada.estado === "cancelado") {
-      mostrarAlerta("Esta reserva ya fue cancelada");
-      return;
-    }
+      reservaSeleccionada.estado = "cancelado";
 
-    reservaSeleccionada.estado = "cancelado";
-
-    if (detalleExito) {
-      detalleExito.innerHTML = `
-        <div class="bg-gray-950 border border-gray-800 rounded-lg p-3 text-xs text-gray-400 space-y-1">
-          <p><strong class="text-gray-200">Código:</strong> ${reservaSeleccionada.id}</p>
-          <p><strong class="text-gray-200">Zona:</strong> ${reservaSeleccionada.zona}</p>
-          <p><strong class="text-gray-200">Fecha:</strong> ${reservaSeleccionada.fecha}</p>
-          <p><strong class="text-gray-200">Estado:</strong> <span class="px-2 py-0.5 rounded-full border bg-error/15 border-error text-error">Cancelada</span></p>
-          <div class="mt-2 pt-2 border-t border-gray-800 text-secondary-400 font-semibold">
-            +1 cupo liberado en ${reservaSeleccionada.zona}
+      if (detalleExito) {
+        detalleExito.innerHTML = `
+          <div class="bg-gray-950 border border-gray-800 rounded-lg p-3 text-xs text-gray-400 space-y-1">
+            <p><strong class="text-gray-200">Código:</strong> ${reservaSeleccionada.codigo}</p>
+            <p><strong class="text-gray-200">Zona:</strong> ${reservaSeleccionada.zona}</p>
+            <p><strong class="text-gray-200">Fecha:</strong> ${reservaSeleccionada.fecha}</p>
+            <p><strong class="text-gray-200">Estado:</strong> <span class="px-2 py-0.5 rounded-full border bg-error/15 border-error text-error">Cancelada</span></p>
+            <div class="mt-2 pt-2 border-t border-gray-800 text-secondary-400 font-semibold">
+              +1 cupo liberado en ${reservaSeleccionada.zona}
+            </div>
           </div>
-        </div>
-      `;
-    }
+        `;
+      }
 
-    renderReservas();
-    mostrar("exito");
+      await cargarReservas();
+      mostrar("exito");
+    } catch (error) {
+      mostrarAlerta("Error de conexión con el servidor");
+    } finally {
+      btnConfirmar.disabled = false;
+    }
   }
 
   function mostrarAlerta(mensaje) {
@@ -146,12 +167,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       alerta.classList.add("hidden");
     }, 3000);
-  }
-
-  function estaExpirada(fechaTexto) {
-    const fechaReserva = new Date(fechaTexto);
-    const ahora = new Date();
-    return fechaReserva < ahora;
   }
 
   // Event Listeners directos (Estilo Scrum Master)
@@ -174,6 +189,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Inicializar vista
-  renderReservas();
+  cargarReservas();
   mostrar("lista");
 });

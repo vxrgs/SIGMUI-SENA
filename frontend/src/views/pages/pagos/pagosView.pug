@@ -4,7 +4,7 @@ block content
   link(rel="stylesheet", href="/css/pages/pagos.css")
   
   .flex.flex-col.items-center.py-10.px-4
-    .w-full.max-w-lg
+    #payment-root.w-full.max-w-lg(data-zone-id=zone.id data-price=zone.price)
       h2.font-heading.text-3xl.font-extrabold.text-gray-50.mb-1 Realizar Pago
       p.text-sm.text-gray-400.mb-8 Completa el pago para tu reserva activa
 
@@ -15,15 +15,29 @@ block content
           h3.font-heading.text-sm.font-bold.text-gray-50 Resumen de reserva
 
         .p-6
+          .grid.grid-cols-1.gap-4.mb-5(class="sm:grid-cols-2")
+            div
+              label.block.text-xs.font-medium.text-gray-400.mb-1(for="vehicle-select") Vehículo
+              select#vehicle-select.w-full.bg-gray-950.border.border-gray-700.rounded-lg.px-3.text-sm.text-gray-50(class="py-2.5 focus:outline-none focus:border-primary-500")
+            div
+              label.block.text-xs.font-medium.text-gray-400.mb-1(for="hours-select") Duración
+              select#hours-select.w-full.bg-gray-950.border.border-gray-700.rounded-lg.px-3.text-sm.text-gray-50(class="py-2.5 focus:outline-none focus:border-primary-500")
+                each h in [1, 2, 3, 4, 5, 6, 8, 12, 24]
+                  option(value=h selected=(h === 2))= h === 1 ? "1 hora" : `${h} horas`
+
+          #no-vehicles.hidden.mb-5.p-3.rounded-lg.border.border-warning.text-xs.text-warning(class="bg-warning/10")
+            | Necesitas registrar un vehículo para reservar. 
+            a.underline.font-semibold(href="/vehicles") Registrar vehículo
+
           .flex.justify-between.items-center.mb-4.pb-4.border-b.border-gray-800
             div
               .text-sm.font-bold.text-gray-50.font-heading= zone.name
-              .text-xs.text-gray-400 2 horas (10:00 AM - 12:00 PM)
-            .text-sm.text-gray-50 $#{zone.price * 2}
+              #summary-time.text-xs.text-gray-400
+            #summary-subtotal.text-sm.text-gray-50
 
           .border.rounded-lg.px-5.py-4.flex.justify-between.items-center(class="bg-primary-500/10 border-primary-500/20")
             span.font-heading.font-bold.text-gray-50(class="text-[15px]") Total a pagar
-            span.font-heading.font-extrabold.text-secondary-400(class="text-[26px]") $#{zone.price * 2}
+            span#total-amount.font-heading.font-extrabold.text-secondary-400(class="text-[26px]")
 
       //- Paso 2: Método de pago
       .bg-gray-900.border.border-gray-800.rounded-xl.overflow-hidden.mb-6.transition-all.duration-300
@@ -45,23 +59,23 @@ block content
                 .text-xl.mb-2 🏦
                 .text-xs.font-bold.text-gray-50 PSE / Transferencia
 
-          //- Formulario Tarjeta
+          //- Formulario Tarjeta (simulado: estos datos nunca se envían ni se guardan)
           #card-form.space-y-4
             div
-              label.block.text-xs.font-medium.text-gray-400.mb-1 Número de tarjeta
-              input.w-full.bg-gray-950.border.border-gray-700.rounded-lg.px-4.text-sm.text-gray-50(class="py-2.5 focus:outline-none focus:border-primary-500" type="text" placeholder="0000 0000 0000 0000")
+              label.block.text-xs.font-medium.text-gray-400.mb-1(for="card-number") Número de tarjeta
+              input#card-number.w-full.bg-gray-950.border.border-gray-700.rounded-lg.px-4.text-sm.text-gray-50(class="py-2.5 focus:outline-none focus:border-primary-500" type="text" inputmode="numeric" autocomplete="cc-number" placeholder="0000 0000 0000 0000")
             
             .grid.grid-cols-2.gap-4
               div
-                label.block.text-xs.font-medium.text-gray-400.mb-1 Vencimiento
-                input.w-full.bg-gray-950.border.border-gray-700.rounded-lg.px-4.text-sm.text-gray-50(class="py-2.5 focus:outline-none focus:border-primary-500" type="text" placeholder="MM/YY")
+                label.block.text-xs.font-medium.text-gray-400.mb-1(for="card-expiry") Vencimiento
+                input#card-expiry.w-full.bg-gray-950.border.border-gray-700.rounded-lg.px-4.text-sm.text-gray-50(class="py-2.5 focus:outline-none focus:border-primary-500" type="text" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY")
               div
-                label.block.text-xs.font-medium.text-gray-400.mb-1 CVC
-                input.w-full.bg-gray-950.border.border-gray-700.rounded-lg.px-4.text-sm.text-gray-50(class="py-2.5 focus:outline-none focus:border-primary-500" type="text" placeholder="123")
+                label.block.text-xs.font-medium.text-gray-400.mb-1(for="card-cvc") CVC
+                input#card-cvc.w-full.bg-gray-950.border.border-gray-700.rounded-lg.px-4.text-sm.text-gray-50(class="py-2.5 focus:outline-none focus:border-primary-500" type="text" inputmode="numeric" autocomplete="cc-csc" placeholder="123")
             
             div
-              label.block.text-xs.font-medium.text-gray-400.mb-1 Nombre en la tarjeta
-              input.w-full.bg-gray-950.border.border-gray-700.rounded-lg.px-4.text-sm.text-gray-50(class="py-2.5 focus:outline-none focus:border-primary-500" type="text" placeholder="Ej. Juan Pérez")
+              label.block.text-xs.font-medium.text-gray-400.mb-1(for="card-name") Nombre en la tarjeta
+              input#card-name.w-full.bg-gray-950.border.border-gray-700.rounded-lg.px-4.text-sm.text-gray-50(class="py-2.5 focus:outline-none focus:border-primary-500" type="text" autocomplete="cc-name" placeholder="Ej. Juan Pérez")
 
       //- Paso 3: Confirmación
       .bg-gray-900.border.border-gray-800.rounded-xl.overflow-hidden.mb-8
@@ -70,8 +84,9 @@ block content
           h3.font-heading.text-sm.font-bold.text-gray-50 Confirmación
 
         .p-6
-          button#submit-payment.w-full.bg-gradient-to-r.from-primary-500.to-secondary-500.text-white.font-bold.py-3.rounded-lg.shadow-lg.transition-opacity(class="hover:opacity-90")
-            | Pagar $#{zone.price * 2}
+          #payment-error.hidden.mb-4.p-3.rounded-lg.border.border-error.text-xs.font-semibold.text-error(class="bg-error/15" role="alert")
+          button#submit-payment.w-full.bg-gradient-to-r.from-primary-500.to-secondary-500.text-white.font-bold.py-3.rounded-lg.shadow-lg.transition-opacity(class="hover:opacity-90 disabled:opacity-60" type="button")
+            | Pagar
 
   //- Modal de Éxito
   #success-modal.fixed.inset-0.hidden.items-center.justify-center.z-50.opacity-0.transition-opacity.duration-300(class="bg-black/80")
@@ -79,7 +94,9 @@ block content
       .w-16.h-16.rounded-full.flex.items-center.justify-center.mx-auto.mb-4(class="bg-secondary-500/20")
         span.text-3xl ✅
       h3.font-heading.text-xl.font-bold.text-gray-50.mb-2 ¡Pago Exitoso!
-      p.text-sm.text-gray-400.mb-6 Tu reserva en #{zone.name} ha sido confirmada.
+      p.text-sm.text-gray-400.mb-2 Tu reserva en #{zone.name} ha sido confirmada.
+      p.text-xs.text-gray-400.mb-6 Código: 
+        strong#success-code.text-gray-50
       a.block.w-full.bg-gray-800.text-white.font-medium.rounded-lg.transition-colors.no-underline(class="py-2.5 hover:bg-gray-700" href="/reservas/historial") Ver mis reservas
 
   script(src="/js/pages/pagos.js")

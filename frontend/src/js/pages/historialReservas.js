@@ -1,35 +1,44 @@
 document.addEventListener("DOMContentLoaded", () => {
   let filtroActual = "todas";
 
-  const reservas = [
-    {
-      codigo: "PRK-001",
-      zona: "Zona Norte A",
-      vehiculo: "ABC-123",
-      fecha: "18 Mar 2026 - 2:00 AM",
-      duracion: "2 horas",
-      monto: 2000,
-      estado: "pagada"
-    },
-    {
-      codigo: "PRK-002",
-      zona: "Zona Sur B",
-      vehiculo: "XYZ-987",
-      fecha: "19 Mar 2026 - 4:00 PM",
-      duracion: "3 horas",
-      monto: 3000,
-      estado: "pendiente"
-    },
-    {
-      codigo: "PRK-003",
-      zona: "Zona Central",
-      vehiculo: "LMN-456",
-      fecha: "20 Mar 2026 - 1:00 PM",
-      duracion: "1 hora",
-      monto: 1500,
-      estado: "cancelado"
+  let reservas = [];
+
+  function formatearFecha(iso) {
+    const d = new Date(iso);
+    const fecha = d.toLocaleDateString("es-CO", { day: "numeric", month: "short", year: "numeric" });
+    const hora = d.toLocaleTimeString("es-CO", { hour: "numeric", minute: "2-digit" });
+    return `${fecha} - ${hora}`;
+  }
+
+  async function cargarReservas() {
+    const cont = document.querySelector(".tabla-body");
+    try {
+      const res = await fetch("/api/reservations");
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message);
+
+      reservas = data.reservations.map(r => ({
+        codigo: r.code,
+        zona: r.zone,
+        vehiculo: r.vehicle,
+        fecha: formatearFecha(r.startsAt),
+        duracion: `${r.hours} ${r.hours === 1 ? "hora" : "horas"}`,
+        monto: r.amount,
+        estado: r.status === "cancelada" ? "cancelado" : r.status
+      }));
+    } catch (error) {
+      if (cont) {
+        cont.innerHTML = `
+          <div class="p-8 text-center text-sm text-error bg-gray-900 border border-dashed border-gray-800 rounded-lg m-4">
+            No se pudo cargar tu historial. Intenta de nuevo.
+          </div>`;
+      }
+      return;
     }
-  ];
+
+    renderTabla();
+    renderResumen();
+  }
 
   function getReservasFiltradas() {
     if (filtroActual === "todas") return reservas;
@@ -134,6 +143,5 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Inicialización
-  renderTabla();
-  renderResumen();
+  cargarReservas();
 });

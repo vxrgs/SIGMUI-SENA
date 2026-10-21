@@ -1,0 +1,8 @@
+extends ../../layouts/admin.pug
+
+block content
+  .flex.flex-col.items-center.justify-center.text-center.py-20.px-6
+    .w-16.h-16.rounded-2xl.flex.items-center.justify-center.text-3xl.mb-5(class="bg-error/15 text-error") 🔒
+    h1.font-heading.text-2xl.font-extrabold.text-gray-50.mb-2 Acceso restringido
+    p.text-sm.text-gray-400.max-w-sm.mb-6 No tienes permisos para acceder a esta sección. Si crees que es un error, contacta a un administrador.
+    a.px-5.rounded-xl.text-sm.font-medium.text-white.no-underline.transition-opacity(class="py-2.5 bg-gradient-to-r from-primary-500 to-secondary-400 hover:opacity-90" href="/zonas") Volver a Zonas

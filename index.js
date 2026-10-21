@@ -1,45 +1,37 @@
 import express from "express";
+import cookieParser from "cookie-parser";
 import path from "path";
 import { fileURLToPath } from "url";
-import sequelize from "./src/db/connection.js";
-import User from "./src/models/User.js";
-import Zone from "./src/models/Zone.js";
+import { Op } from "sequelize";
+import { initDatabase } from "./src/db/init.js";
+import { User, Zone } from "./src/models/index.js";
+import {
+  issueSession,
+  clearSession,
+  loadUser,
+  requireAuth,
+  requireAdmin,
+  assertAuthConfig,
+} from "./src/middleware/auth.js";
+import { HttpError } from "./src/utils/httpError.js";
+import { hashPassword, verifyPassword, isHashed, isStrongPassword } from "./src/utils/password.js";
+import vehiclesRouter from "./src/routes/vehicles.js";
+import reservationsRouter from "./src/routes/reservations.js";
+import adminUsersRouter from "./src/routes/adminUsers.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const normalizeEmail = (value) => String(value || "").trim().toLowerCase();
 
 // Middleware de peticiones
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-// Mock data cuando la base de datos no está configurada
-let mockZones = [
-  { id: 'centro-a', name: 'Zona Centro A', shortName: 'Centro A', address: 'Calle 15 #8-20, Centro', price: 2500, availableSpots: 14, totalSpots: 20, schedule: '6:00 AM — 10:00 PM', positionTop: '22%', positionLeft: '18%' },
-  { id: 'norte-b', name: 'Zona Norte B', shortName: 'Norte B', address: 'Carrera 10 #24-45, Norte', price: 3000, availableSpots: 3, totalSpots: 20, schedule: '7:00 AM — 9:00 PM', positionTop: '18%', positionLeft: '58%' },
-  { id: 'sur-c', name: 'Zona Sur C', shortName: 'Sur C', address: 'Calle 80 #12-10, Sur', price: 2000, availableSpots: 12, totalSpots: 20, schedule: '24 Horas', positionTop: '55%', positionLeft: '30%' },
-  { id: 'occidental-d', name: 'Zona Occidental D', shortName: 'Occ. D', address: 'Av. Américas #45-00', price: 2800, availableSpots: 0, totalSpots: 20, schedule: '6:00 AM — 11:00 PM', positionTop: '52%', positionLeft: '68%' }
-];
-let mockUsers = [
-  { email: 'usuario@ejemplo.com', password: 'password123', name: 'Thom Vargas', role: 'Ciudadano' }
-];
-
-// Sincronización de Base de Datos
-if (sequelize) {
-  sequelize.sync().then(async () => {
-    console.log("Database connected and synced.");
-    const count = await Zone.count();
-    if (count === 0) {
-      await Zone.bulkCreate(mockZones);
-    }
-  }).catch(err => {
-    console.error("Failed to sync DB:", err);
-  });
-} else {
-  console.log("Running without database using mock data");
-}
+app.use(cookieParser());
 
 // Configuración del motor de plantillas (Pug)
 app.set("view engine", "pug");
@@ -50,18 +42,13 @@ app.use(express.static(path.join(__dirname, "frontend/public")));
 app.use(express.static(path.join(__dirname, "frontend/src")));
 app.use(express.static(path.join(__dirname, "public")));
 
-// Usuario predeterminado
-const defaultUser = {
-  name: "Thom Vargas",
-  role: "Administrator",
-  avatarUrl: "/img/default-avatar.png",
-};
+// Sesión: expone `user` (nombre, correo, rol, isAdmin) a todas las vistas
+app.use(loadUser);
 
 // ==========================================
 // RUTAS DE AUTENTICACIÓN Y HOME
 // ==========================================
 
-// Página principal (Home) al entrar a la raíz del sitio
 // Página principal (Home) al entrar a la raíz del sitio
 app.get("/", (req, res) => {
   res.render("pages/home/homeView", {
@@ -105,61 +92,51 @@ app.get("/auth/new-password", (req, res) => {
 });
 
 // Renderizar la pantalla de Mis Vehículos
-app.get('/vehicles', (req, res) => {
+app.get('/vehicles', requireAuth, (req, res) => {
   res.render('pages/vehicles/vehiclesView', { 
     title: 'Mis Vehículos',
-    user: defaultUser,
     currentRoute: 'vehicles'
   });
 });
 
 // Procesar el inicio de sesión
 app.post("/auth/login", async (req, res) => {
-  const { email, password } = req.body;
-  
+  const email = normalizeEmail(req.body.email);
+  const { password } = req.body;
+
+  const renderError = (errorMessage) =>
+    res.render("pages/auth/loginView", { title: "Iniciar sesión", errorMessage });
+
   try {
-    let user = null;
-    if (sequelize) {
-      user = await User.findOne({ where: { email } });
-      if (!user && email === 'usuario@ejemplo.com') {
-        user = await User.create({
-          name: 'Thom Vargas',
-          email: 'usuario@ejemplo.com',
-          password: 'password123',
-          role: 'Ciudadano'
-        });
-      }
-    } else {
-      user = mockUsers.find(u => u.email === email);
+    const user = await User.findOne({ where: { email } });
+
+    if (!user || !(await verifyPassword(password, user.password))) {
+      return renderError("Credenciales inválidas");
+    }
+    if (!user.active) {
+      return renderError("Tu cuenta está desactivada. Contacta a un administrador.");
     }
 
-    if (user && (password === user.password || password === 'password123')) {
-      res.redirect("/zonas");
-    } else {
-      res.render("pages/auth/loginView", {
-        title: "Iniciar sesión",
-        errorMessage: "Credenciales inválidas"
-      });
+    // Migración transparente: contraseñas antiguas en texto plano pasan a bcrypt
+    if (!isHashed(user.password)) {
+      await user.update({ password: await hashPassword(password) });
     }
+
+    issueSession(res, user);
+    res.redirect("/zonas");
   } catch (error) {
-    res.render("pages/auth/loginView", {
-      title: "Iniciar sesión",
-      errorMessage: "Ocurrió un error al iniciar sesión"
-    });
+    console.error(error);
+    renderError("Ocurrió un error al iniciar sesión");
   }
 });
 
 // Procesar la solicitud de restablecimiento de contraseña (HU 02.2)
 app.post("/auth/forgot-password", async (req, res) => {
-  const { email } = req.body;
+  const email = normalizeEmail(req.body.email);
 
   try {
-    let user = null;
-    if (sequelize) {
-      user = await User.findOne({ where: { email } });
-    } else {
-      user = mockUsers.find(u => u.email === email);
-    }
+    // Respuesta idéntica exista o no el correo, para no revelar qué cuentas existen
+    await User.findOne({ where: { email } });
 
     res.render("pages/auth/forgotPasswordView", {
       title: "Olvidaste tu contraseña",
@@ -175,29 +152,39 @@ app.post("/auth/forgot-password", async (req, res) => {
 
 // API para procesar el registro de usuario
 app.post("/api/auth/register", async (req, res) => {
-  const { firstname, lastname, email, password } = req.body;
+  const firstname = String(req.body.firstname || "").trim();
+  const lastname = String(req.body.lastname || "").trim();
+  const email = normalizeEmail(req.body.email);
+  const { password } = req.body;
+
+  if (!firstname || !lastname || !EMAIL_RE.test(email) || !isStrongPassword(password)) {
+    return res.status(400).json({ success: false, message: "Datos de registro inválidos." });
+  }
 
   try {
-    if (sequelize) {
-      const existingUser = await User.findOne({ where: { email } });
-      if (existingUser) {
-        return res.status(400).json({ success: false, message: "El correo ya existe." });
-      }
-
-      await User.create({
-        name: `${firstname} ${lastname}`,
-        email,
-        password,
-        role: "Ciudadano"
-      });
-    } else {
-      mockUsers.push({ email, password, name: `${firstname} ${lastname}`, role: "Ciudadano" });
+    if (await User.findOne({ where: { email } })) {
+      return res.status(400).json({ success: false, message: "El correo ya existe." });
     }
+
+    // El rol nunca viene del cliente: todo registro público es Ciudadano
+    await User.create({
+      name: `${firstname} ${lastname}`,
+      email,
+      password: await hashPassword(password),
+      role: "Ciudadano"
+    });
 
     return res.status(201).json({ success: true, message: "Usuario creado exitosamente" });
   } catch (error) {
+    console.error(error);
     return res.status(500).json({ success: false, message: "Error en servidor" });
   }
+});
+
+// Cerrar sesión
+app.post("/auth/logout", (req, res) => {
+  clearSession(res);
+  res.redirect("/auth/login");
 });
 
 // ==========================================
@@ -208,34 +195,22 @@ app.get("/dashboard", (req, res) => {
   res.redirect("/zonas");
 });
 
-app.get("/zonas", (req, res) => {
+app.get("/zonas", requireAuth, (req, res) => {
   res.render("pages/zones/zonesView", {
     title: "Consulta de Zonas",
-    user: defaultUser,
     currentRoute: "zonas",
   });
 });
 
-app.get("/pagos", async (req, res) => {
-  const zoneId = req.query.zoneId || 'centro-a';
-  let zone = null;
-  if (sequelize) {
-    try {
-      zone = await Zone.findByPk(zoneId);
-    } catch(e) {
-      console.error(e);
-    }
-  } else {
-    zone = mockZones.find(z => z.id === zoneId);
-  }
-  
+app.get("/pagos", requireAuth, async (req, res) => {
+  const zone = await Zone.findByPk(String(req.query.zoneId || 'centro-a'));
+
   if (!zone) {
     return res.redirect('/zonas');
   }
 
   res.render("pages/pagos/pagosView", {
     title: "Realizar Pago",
-    user: defaultUser,
     currentRoute: "pagos",
     zone: zone
   });
@@ -243,39 +218,154 @@ app.get("/pagos", async (req, res) => {
 
 app.get("/api/zones", async (req, res) => {
   try {
-    let zones = mockZones;
-    if (sequelize) {
-      zones = await Zone.findAll();
-    }
-    res.json(zones);
+    res.json(await Zone.findAll());
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch zones" });
   }
 });
 
-app.get("/reservas/cancelar", (req, res) => {
+app.get("/reservas/cancelar", requireAuth, (req, res) => {
   res.render("pages/reservas/cancelarView", {
     title: "Cancelación de Reservas",
-    user: defaultUser,
     currentRoute: "reservas",
   });
 });
 
-app.get("/reservas/historial", (req, res) => {
+app.get("/reservas/historial", requireAuth, (req, res) => {
   res.render("pages/reservas/historialView", {
     title: "Historial de Reservas",
-    user: defaultUser,
     currentRoute: "historial",
   });
 });
 
-app.get("/admin/usuarios", (req, res) => {
+// Solo administradores
+app.get("/admin/usuarios", requireAdmin, (req, res) => {
   res.render("pages/admin/usuariosView", {
     title: "Gestión de Usuarios",
-    user: defaultUser,
     currentRoute: "usuarios",
   });
 });
+
+// ==========================================
+// CONFIGURACIÓN
+// ==========================================
+
+app.get("/configuracion", requireAuth, async (req, res) => {
+  // Las tarifas por zona solo se cargan para administradores
+  const zones = req.user.isAdmin ? await Zone.findAll({ raw: true }) : [];
+
+  res.render("pages/configuracion/configuracionView", {
+    title: "Configuración",
+    currentRoute: "configuracion",
+    zones,
+  });
+});
+
+// Actualizar perfil (nombre y correo)
+app.put("/api/settings/profile", requireAuth, async (req, res) => {
+  const name = String(req.body.name || "").trim();
+  const email = normalizeEmail(req.body.email);
+
+  if (name.length < 2 || name.length > 80) {
+    throw new HttpError(400, "El nombre debe tener entre 2 y 80 caracteres.");
+  }
+  if (!EMAIL_RE.test(email)) {
+    throw new HttpError(400, "Correo electrónico inválido.");
+  }
+
+  const user = await User.findByPk(req.user.id);
+  if (await User.findOne({ where: { email, id: { [Op.ne]: user.id } } })) {
+    throw new HttpError(409, "Ese correo ya está en uso.");
+  }
+
+  await user.update({ name, email });
+  res.json({ success: true, message: "Perfil actualizado correctamente." });
+});
+
+// Cambiar contraseña
+app.put("/api/settings/password", requireAuth, async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+
+  if (!isStrongPassword(newPassword)) {
+    throw new HttpError(400, "La nueva contraseña debe tener mínimo 8 caracteres, con letras y números.");
+  }
+
+  const user = await User.findByPk(req.user.id);
+  if (!(await verifyPassword(currentPassword, user.password))) {
+    throw new HttpError(400, "La contraseña actual es incorrecta.");
+  }
+  if (newPassword === currentPassword) {
+    throw new HttpError(400, "La nueva contraseña debe ser distinta a la actual.");
+  }
+
+  await user.update({ password: await hashPassword(newPassword) });
+  res.json({ success: true, message: "Contraseña actualizada correctamente." });
+});
+
+// Actualizar tarifas y horarios de las zonas (solo administradores)
+app.put("/api/admin/zones", requireAdmin, async (req, res) => {
+  const updates = Array.isArray(req.body.zones) ? req.body.zones : [];
+
+  const invalid = updates.some(z =>
+    typeof z.id !== "string" ||
+    !Number.isFinite(z.price) || z.price < 0 ||
+    typeof z.schedule !== "string" || !z.schedule.trim()
+  );
+  if (updates.length === 0 || invalid) {
+    throw new HttpError(400, "Datos de zonas inválidos.");
+  }
+
+  for (const { id, price, schedule } of updates) {
+    await Zone.update({ price: Math.round(price), schedule: schedule.trim() }, { where: { id } });
+  }
+  res.json({ success: true, message: "Tarifas y horarios actualizados correctamente." });
+});
+
+// ==========================================
+// API: VEHÍCULOS, RESERVAS/PAGOS Y USUARIOS
+// ==========================================
+
+app.use("/api/vehicles", vehiclesRouter);
+app.use("/api", reservationsRouter);
+app.use("/api/admin/users", adminUsersRouter);
+
+// ==========================================
+// MANEJO DE ERRORES
+// ==========================================
+
+app.use((err, req, res, next) => {
+  let status = err.status || 500;
+  let message = err.message;
+
+  if (err.name === "SequelizeUniqueConstraintError") {
+    status = 409;
+    message = "Ya existe un registro con esos datos.";
+  } else if (err.name === "SequelizeValidationError") {
+    status = 400;
+    message = err.errors?.[0]?.message || "Datos inválidos.";
+  } else if (!(err instanceof HttpError)) {
+    console.error(err);
+    status = 500;
+    message = "Error en servidor.";
+  }
+
+  if (req.originalUrl.startsWith("/api/")) {
+    return res.status(status).json({ success: false, message });
+  }
+  res.status(status).send(message);
+});
+
+// ==========================================
+// ARRANQUE
+// ==========================================
+
+try {
+  assertAuthConfig();
+  await initDatabase();
+} catch (error) {
+  console.error("No se pudo iniciar la aplicación:", error.message);
+  process.exit(1);
+}
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running at http://localhost:${PORT}`);

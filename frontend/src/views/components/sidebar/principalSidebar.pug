@@ -51,13 +51,15 @@ aside.w-64.bg-gray-950.border-r.border-gray-800.flex.flex-col.h-full.hidden(clas
     li.px-2.mt-4.mb-2
       span.text-xs.font-semibold.tracking-wider.uppercase.text-gray-500 Sistema
 
-    li
-      a.flex.items-center.gap-3.px-3.py-2.rounded-lg.text-sm.transition-colors.no-underline(
-        href="/admin/usuarios"
-        class=currentRoute === "usuarios" ? "bg-primary-500/10 text-primary-400 font-medium" : "text-gray-400 hover:bg-gray-900 hover:text-gray-50 font-normal"
-      )
-        span.text-lg 👥
-        span Usuarios
+    //- Solo visible para administradores
+    if user && user.isAdmin
+      li
+        a.flex.items-center.gap-3.px-3.py-2.rounded-lg.text-sm.transition-colors.no-underline(
+          href="/admin/usuarios"
+          class=currentRoute === "usuarios" ? "bg-primary-500/10 text-primary-400 font-medium" : "text-gray-400 hover:bg-gray-900 hover:text-gray-50 font-normal"
+        )
+          span.text-lg 👥
+          span Usuarios
 
     li
       a.flex.items-center.gap-3.px-3.py-2.rounded-lg.text-sm.transition-colors.no-underline(
@@ -67,9 +69,10 @@ aside.w-64.bg-gray-950.border-r.border-gray-800.flex.flex-col.h-full.hidden(clas
         span.text-lg ⚙️
         span Configuración
 
-  .p-4.border-t.border-gray-800
-    .flex.items-center.gap-3.p-2.bg-gray-900.rounded-lg
-      .w-8.h-8.rounded-full.bg-gradient-to-br.from-primary-500.to-secondary-500.flex.items-center.justify-center.text-xs.font-bold.text-white.font-heading TV
-      .flex-1
-        .text-xs.font-medium.text-gray-50 T_vxrgs
-        .text-xs.text-gray-400 Ciudadano
+  if user
+    .p-4.border-t.border-gray-800
+      .flex.items-center.gap-3.p-2.bg-gray-900.rounded-lg
+        .w-8.h-8.rounded-full.bg-gradient-to-br.from-primary-500.to-secondary-500.flex.items-center.justify-center.text-xs.font-bold.text-white.font-heading= user.name.split(" ").map(function (p) { return p.charAt(0); }).join("").slice(0, 2).toUpperCase()
+        .flex-1.min-w-0
+          .text-xs.font-medium.text-gray-50.truncate= user.name
+          .text-xs.text-gray-400= user.role

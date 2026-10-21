@@ -1,0 +1,113 @@
+extends ../../layouts/admin.pug
+
+//- Helpers de formulario reutilizables
+mixin field(id, label, type, value, attrs)
+  div
+    label.block.text-xs.font-semibold.uppercase.text-gray-400(class="mb-1.5 tracking-wider" for=id)= label
+    input.w-full.bg-gray-950.border.border-gray-800.rounded-xl.px-4.text-sm.text-gray-200.outline-none.transition-colors(
+      class="py-2.5 focus:border-primary-500"
+      id=id
+      name=id
+      type=type
+      value=value
+    )&attributes(attrs)
+
+mixin toggle(id, title, description)
+  label.flex.items-center.justify-between.gap-4.cursor-pointer(for=id)
+    div
+      span.block.text-sm.font-medium.text-gray-200= title
+      span.block.text-xs.text-gray-400= description
+    input.pref-toggle.w-5.h-5.cursor-pointer(id=id type="checkbox" data-pref=id style="accent-color: var(--primary-500)")
+
+mixin card(title, subtitle, icon)
+  section.bg-gray-900.border.border-gray-800.rounded-xl.p-6
+    .flex.items-start.gap-4.mb-5.pb-5.border-b.border-gray-800
+      .w-10.h-10.rounded-xl.flex.items-center.justify-center.text-lg.flex-shrink-0(class="bg-primary-500/15 text-primary-400")= icon
+      div
+        h2.font-heading.text-lg.font-bold.text-gray-50= title
+        p.text-xs.text-gray-400= subtitle
+    block
+
+mixin saveButton(id, label)
+  button.px-5.rounded-xl.text-sm.font-medium.text-white.border-0.cursor-pointer.transition-opacity(
+    id=id
+    type="submit"
+    class="py-2.5 bg-gradient-to-r from-primary-500 to-secondary-400 hover:opacity-90 disabled:opacity-50"
+  )= label
+
+block content
+  .flex.flex-col.py-8.px-6.max-w-4xl.mx-auto.gap-6
+    //- Encabezado
+    .mb-2
+      h1.font-heading.text-3xl.font-extrabold.text-gray-50.mb-1 Configuración
+      p.text-sm.text-gray-400 Administra tu perfil, seguridad y preferencias de la cuenta
+
+    //- Mensaje global (éxito / error)
+    #configMensaje.hidden.px-4.py-3.rounded-xl.border.text-sm(role="status" aria-live="polite")
+
+    //- PERFIL
+    +card("Perfil", "Tu información personal visible en la plataforma", "👤")
+      form#formPerfil.flex.flex-col.gap-4(novalidate)
+        .flex.items-center.gap-3.mb-1
+          span.inline-block.rounded-full.border.text-xs.font-medium(
+            class=user.isAdmin ? "px-2.5 py-0.5 bg-warning/15 border-warning/40 text-warning" : "px-2.5 py-0.5 bg-primary-500/10 border-primary-500/40 text-primary-400"
+          )= user.role
+        .grid.grid-cols-1.gap-4(class="md:grid-cols-2")
+          +field("nombre", "Nombre completo", "text", user.name, { required: true, autocomplete: "name" })
+          +field("correo", "Correo electrónico", "email", user.email, { required: true, autocomplete: "email" })
+        .flex.justify-end
+          +saveButton("guardarPerfil", "Guardar perfil")
+
+    //- SEGURIDAD
+    +card("Seguridad", "Actualiza tu contraseña periódicamente para proteger tu cuenta", "🔐")
+      form#formPassword.flex.flex-col.gap-4(novalidate)
+        +field("passwordActual", "Contraseña actual", "password", "", { required: true, autocomplete: "current-password" })
+        .grid.grid-cols-1.gap-4(class="md:grid-cols-2")
+          +field("passwordNueva", "Nueva contraseña", "password", "", { required: true, minlength: 8, autocomplete: "new-password" })
+          +field("passwordConfirmar", "Confirmar nueva contraseña", "password", "", { required: true, autocomplete: "new-password" })
+        p.text-xs.text-gray-400 Mínimo 8 caracteres, con al menos una letra y un número.
+        .flex.justify-end
+          +saveButton("guardarPassword", "Cambiar contraseña")
+
+    //- PREFERENCIAS (se guardan en este navegador)
+    +card("Preferencias", "Controla qué avisos quieres recibir. Se guardan en este navegador.", "🔔")
+      .flex.flex-col.gap-5
+        +toggle("prefNotifReservas", "Recordatorios de reserva", "Aviso antes de que venza tu reserva")
+        +toggle("prefNotifPagos", "Confirmaciones de pago", "Recibe un aviso cuando se registre un pago")
+        +toggle("prefNotifCupos", "Disponibilidad de cupos", "Alertas cuando una zona favorita tenga cupos libres")
+        +toggle("prefCorreo", "Notificaciones por correo", "Envía copia de los avisos a tu correo electrónico")
+
+    //- ADMINISTRACIÓN (solo administradores)
+    if user.isAdmin
+      +card("Tarifas y horarios de zonas", "Solo administradores · Ajusta el precio por hora y el horario de cada zona", "🛡️")
+        form#formZonas.flex.flex-col.gap-4(novalidate)
+          each zone in zones
+            .grid.grid-cols-1.gap-3.items-end.p-4.bg-gray-950.border.border-gray-800.rounded-xl.zone-row(
+              class="md:grid-cols-[1fr_140px_1fr]"
+              data-zone-id=zone.id
+            )
+              div
+                span.block.text-sm.font-semibold.text-gray-200= zone.name
+                span.block.text-xs.text-gray-400= zone.address
+              div
+                label.block.text-xs.font-semibold.uppercase.text-gray-400(class="mb-1.5 tracking-wider" for=`price-${zone.id}`) Precio / hora
+                input.zone-price.w-full.bg-gray-900.border.border-gray-800.rounded-xl.px-3.py-2.text-sm.text-gray-200.outline-none(
+                  class="focus:border-primary-500"
+                  id=`price-${zone.id}`
+                  type="number"
+                  min="0"
+                  step="100"
+                  value=zone.price
+                )
+              div
+                label.block.text-xs.font-semibold.uppercase.text-gray-400(class="mb-1.5 tracking-wider" for=`schedule-${zone.id}`) Horario
+                input.zone-schedule.w-full.bg-gray-900.border.border-gray-800.rounded-xl.px-3.py-2.text-sm.text-gray-200.outline-none(
+                  class="focus:border-primary-500"
+                  id=`schedule-${zone.id}`
+                  type="text"
+                  value=zone.schedule
+                )
+          .flex.justify-end
+            +saveButton("guardarZonas", "Guardar tarifas")
+
+  script(src="/js/pages/configuracion.js")
