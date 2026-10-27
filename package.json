@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "concurrently \"nodemon index.js\" \"npx @tailwindcss/cli -i frontend/src/css/main.css -o frontend/src/css/output.css --watch\"",
+    "dev": "concurrently --kill-others-on-fail \"nodemon index.js\" \"npx @tailwindcss/cli -i frontend/src/css/main.css -o frontend/src/css/output.css --watch\"",
     "build": "npx @tailwindcss/cli -i frontend/src/css/main.css -o frontend/src/css/output.css --minify"
   },
   "repository": {
