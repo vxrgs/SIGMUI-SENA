@@ -3,8 +3,10 @@ import cookieParser from "cookie-parser";
 import path from "path";
 import { fileURLToPath } from "url";
 import { Op } from "sequelize";
+import jwt from "jsonwebtoken";
 import { initDatabase } from "./src/db/init.js";
 import { User, Zone } from "./src/models/index.js";
+import { sendVerificationEmail } from "./src/utils/mailer.js"; // <--- 1. Importamos nuestro cartero
 import {
   issueSession,
   clearSession,
@@ -70,6 +72,37 @@ app.get("/auth/register", (req, res) => {
   });
 });
 
+// Ruta para verificar el correo mediante el token enviado por Mailtrap
+app.get("/auth/verify", async (req, res) => {
+  try {
+    const { token } = req.query;
+    if (!token) {
+      return res.status(400).send("Token de verificación faltante.");
+    }
+
+    // Decodificar el token usando tu secreto de JWT
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findByPk(decoded.id);
+
+    if (!user) {
+      return res.status(404).send("Usuario no encontrado.");
+    }
+
+    if (user.active) {
+      return res.send("Tu cuenta ya había sido verificada anteriormente. ¡Ya puedes iniciar sesión!");
+    }
+
+    // Activar la cuenta del usuario
+    user.active = true;
+    await user.save();
+
+    return res.send("¡Correo verificado con éxito! Ya puedes iniciar sesión en Parkalia.");
+  } catch (error) {
+    console.error("Error al verificar el token:", error);
+    return res.status(400).send("El enlace de verificación ha expirado o no es válido.");
+  }
+});
+
 // Renderizar la pantalla de verificación de código (HU 02.2)
 app.get("/auth/forgot-password", (req, res) => {
   res.render("pages/auth/forgotPasswordView", {
@@ -114,7 +147,7 @@ app.post("/auth/login", async (req, res) => {
       return renderError("Credenciales inválidas");
     }
     if (!user.active) {
-      return renderError("Tu cuenta está desactivada. Contacta a un administrador.");
+      return renderError("Tu cuenta está desactivada o pendiente de verificar correo. Contacta a un administrador.");
     }
 
     // Migración transparente: contraseñas antiguas en texto plano pasan a bcrypt
@@ -135,7 +168,6 @@ app.post("/auth/forgot-password", async (req, res) => {
   const email = normalizeEmail(req.body.email);
 
   try {
-    // Respuesta idéntica exista o no el correo, para no revelar qué cuentas existen
     await User.findOne({ where: { email } });
 
     res.render("pages/auth/forgotPasswordView", {
@@ -150,7 +182,7 @@ app.post("/auth/forgot-password", async (req, res) => {
   }
 });
 
-// API para procesar el registro de usuario
+// API para procesar el registro de usuario (¡Actualizada con envío de correo!)
 app.post("/api/auth/register", async (req, res) => {
   const firstname = String(req.body.firstname || "").trim();
   const lastname = String(req.body.lastname || "").trim();
@@ -166,15 +198,29 @@ app.post("/api/auth/register", async (req, res) => {
       return res.status(400).json({ success: false, message: "El correo ya existe." });
     }
 
-    // El rol nunca viene del cliente: todo registro público es Ciudadano
-    await User.create({
-      name: `${firstname} ${lastname}`,
+    const fullName = `${firstname} ${lastname}`;
+
+    // 1. Creamos el usuario inactivo para obligar la verificación por correo
+    const nuevoUsuario = await User.create({
+      name: fullName,
       email,
       password: await hashPassword(password),
-      role: "Ciudadano"
+      role: "Ciudadano",
+      active: false // <--- Inactivo hasta que haga clic en el correo
     });
 
-    return res.status(201).json({ success: true, message: "Usuario creado exitosamente" });
+    // 2. Generar token temporal de verificación (expira en 1 día)
+    const emailToken = jwt.sign({ id: nuevoUsuario.id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+
+    // 3. Llamar al cartero para enviar el correo con la plantilla Pug + Tailwind a Mailtrap
+    await sendVerificationEmail(email, fullName, emailToken);
+
+    return res.status(201).json({ 
+      success: true, 
+      message: "Usuario creado exitosamente. Revisa tu bandeja en Mailtrap para verificar tu cuenta." 
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ success: false, message: "Error en servidor" });
@@ -251,7 +297,6 @@ app.get("/admin/usuarios", requireAdmin, (req, res) => {
 // ==========================================
 
 app.get("/configuracion", requireAuth, async (req, res) => {
-  // Las tarifas por zona solo se cargan para administradores
   const zones = req.user.isAdmin ? await Zone.findAll({ raw: true }) : [];
 
   res.render("pages/configuracion/configuracionView", {

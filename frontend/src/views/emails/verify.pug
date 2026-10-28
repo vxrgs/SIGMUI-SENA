@@ -1,0 +1,18 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    title Confirma tu cuenta en Parkalia
+    script(src="https://cdn.tailwindcss.com")
+  body(class="bg-slate-100 font-sans p-6")
+    div(class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-8")
+      div(class="text-center")
+        h1(class="text-2xl font-bold text-emerald-600 mb-2") ¡Bienvenido a Parkalia!
+        p(class="text-slate-600 mb-6") Hola 
+          span(class="font-semibold text-slate-800")= name
+          |, gracias por registrarte. Para verificar tu identidad y activar tu cuenta, haz clic en el siguiente botón:
+        
+        a(href=verificationUrl, class="inline-block bg-emerald-600 text-white font-medium px-6 py-3 rounded-lg shadow hover:bg-emerald-700 transition")
+          | Verificar mi correo
+        
+        p(class="text-xs text-slate-400 mt-6") Si tú no solicitaste esta cuenta, puedes ignorar este mensaje con total tranquilidad.
